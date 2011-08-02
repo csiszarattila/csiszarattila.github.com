@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>Git fordítása OSX Tiger alatt (SVN modullal)</h1>
+    <p>Rendhagyó módon nem egy Rubys témájú bejegyzéssel nyitom meg az oldalt, de remélem elnézőek lesztek. Terveim szerint egyébként sem csak a kedvenc programozási nyelvünkről szólna ez a blog, időnként előfordulhat, hogy körüljárok egy hasonlóan érdekes témát. Ezúttal a <a href="http://git.or.cz/">Git verziókezelő</a> telepítésén a sor.</p>
+    <p>Hogy a téma mennyire aktuális azt az mutatja, hogy az utóbbi időben egyre több Rubys projekt - többek között a Rails is - áttért a Git verziókezelőre és nem véletlenül.</p>
+    <p>(Ha időm engedi és ti is jónak látjátok írok majd egy Git gyorstalpalót, bár én magam sem régóta használom - egyébként nagy megelégedettséggel.)</p>
+    <p>Az első probléma amit le kell küzdenünk, hogy feltelepítsük rendszerünkre a verziókezelőt. Mivel én a Mac OSX Tiger, 10.4-es verzióját használom és csak Leopárd(OSX 10.5) alá adtak ki előfordított csomagokat, parancsorból kellett telepítenem. Ráadásul szerettem volna a korábbi SVN-es projekteimet is importálni, amelyet csak némi hekkelés árán sikerült megoldani.</p>
+    <p>A telepítés menete tehát elsősorban Mac OSX 10.4 - Tiger operációs rendszert használóknak készült, de szerintem bármilyen *nix alapú rendszerre megállja a helyét.</p>
+    <p>(Természetesen telepíthetjük a Git-et <a href="http://www.finkproject.org/">Fink</a>-en vagy <a href="http://www.macports.org/">Macports</a>-on keresztül is, ez a bejegyzés viszont azoknak szól akik nem szeretik a csomagkezelőket, vagy csak az éppen aktuális forrást szeretnék használni).</p>
+    <h2>A telepítés menete</h2>
+    <p>Szerencsére nem sok függősége van a Git-nek, ezek többsége előtelepítve megtalálható az operációs rendszer mellett, talán csak az expat jelent kivételt ez alól. (A Git függőségeinek a többsége amúgy is csak a dokumentáció többféle formátumra alakítása miatt kell.)</p>
+    <p>Tehát töltsük le a legfrissebb Git forráskódot - a bejegyzés írásakor ez a 1.5.5-nek felel meg, de a telepítés megállja a helyét a későbbi verziókra is -, majd a 'szokásos' telepítési forgatókönyvet követve:</p>
+    <pre>./git-1.5.5&#x000A;./configure --prefix=/usr/local/git-1.5.5&#x000A;make&#x000A;sudo make install&#x000A;</pre>
+    <p>Hozzunk létre egy szimbolikus linket a program könyvtárára, így egyszerűbben megadhatjuk az elérését parancssorból, új verziók telepítésekor pedig elég csak a linket módosítani:</p>
+    <pre>ln -s /usr/local/git-1.5.5 /usr/local/git&#x000A;</pre>
+    <p>Ahhoz, hogy a Git parancsait ne kelljen ezen a hosszú útvonalon keresztül elérnünk, és kiadásukkor a héj megtalálja automatikusan őket, hozzá kell adnunk a PATH környezeti változóhoz a fent létrehozott hivatkozás <strong>bin</strong> könyvtárát:</p>
+    <pre>export $PATH="$PATH:/usr/local/git/bin/"&#x000A;</pre>
+    <p>
+      <em>A fenti lépéssorozat a legtöbb program telepítésénél járható út, akinek tehát nem ismerős érdemes megtanulnia, később pedig utánajárnia, hogy miért is működik mindez úgy, ahogy.</em>
+    </p>
+    <h2>SVN repók importálása Git alá.</h2>
+    <p>Ha Subversionről akarunk átállni és szeretnénk a korábbi projekteinket használni Git alatt is, a <strong>git-svn</strong> parancsot kell használnuk.</p>
+    <p>Nos én már az első használatakor problémába ütköztem, ugyanis az alábbi hibaüzenetet kaptam:</p>
+    <pre>Can't locate SVN/Core.pm in @INC (@INC contains: ... )</pre>
+    <p>A git-svn ugyanis Perl nyelven íródott: az SVN Perl moduljára épül. Használatához ezért telepítenünk kell az SVN SWIG Perl modulját, amihez szükségünk lesz az SVN forráskódjára. Ha letöltöttük:</p>
+    <pre>./subversion_forraskod&#x000A;make swig-pl&#x000A;sudo make install-swig-pl&#x000A;</pre>
+    <p>A részletes utasításokat én is <a href="http://larrytheliquid.com/2007/12/29/compiling-git-and-git-svn-on-osx-tiger/">erről az oldalról szedtem.</a></p>
+    <p>De hiába, a git-svn parancs nálam ismét csak elszállt, ezúttal egy bus error-ral.</p>
+    <p>
+      <em>A forráskódból való telepítéskor gyakran szembesül az ember furcsának tűnő problémákkal, amelyek megoldása sokszor órákig tartó keresgélést és információgyűjtést jelent. Amikor azt hihetnénk megoldást találtunk egy adott problémára egy újabb hibába is futhatunk, de a legfontosabb, hogy ekkor se adjuk fel (két hajtépés közben azért tartsunk egy kis szünetet:). A frusztráló problémák megoldása nem csak elégedettséggel tölthet el bennünket, hanem sok hasznos tapasztalattal is felvértezhet.</em>
+    </p>
+    <p>Kis keresgélés után - az SVN install utasítása alapján - kiderült, hogy csak a SWIG 1.3.29-es verziói alatt stabilak a nyelvi bindingek. Telepítsük tehát fel:</p>
+    <pre>./swig 1.3.29_forraskod&#x000A;./configure --with-perl=/usr/bin/perl&#x000A;make&#x000A;sudo make install&#x000A;</pre>
+    <p>
+      <em>A SWIG egy szabványos program, eltérő nyelvek forráskódjának a konverziójára; például C nyelvű forrásokódokat akár Ruby nyelvre is át tudunk "fordítani" a segítségével.</em>
+    </p>
+    A telepítése után ismét állítsuk elő a szükséges Perl modulokat:
+    <pre>subversion&#x000A;./configure --with-perl=/usr/bin/perl (!)&#x000A;make&#x000A;make swig-pl&#x000A;make check-swig-pl (Ha itt minden OK akkor rendben vagyunk)&#x000A;sudo make install&#x000A;</pre>
+    <p>Ezek után mennie kell az SVN repók importálásának Git-re, és fogadjuk meg, hogy soha nem is térünk vissza hozzájuk:)</p>
+    <p>
+      <strong>Megjegyzés(2008.12.23.):</strong>
+      Ezt a cikket elég sok magyarázó szöveggel láttam el az első változata óta, a parancsokat viszont nem próbáltam ki újra, tehát lehetséges, hogy többé már nem állják meg a helyüket - elsősorban a git-svn telepítésére gondolok.
+    </p>
+    <p>
+      <strong>Megjegyzés(2008.12.24.):</strong>
+      Ha a Git 1.6.0.6-ra frissítésekor a <em>make install</em> parancs kiadása után az alábbi figyelmeztetést kapjuk:
+      <pre>!! You have installed git-* commands to new gitexecdir.&#x000A;!! Old version git-* commands still remain in bindir.&#x000A;!! Mixing two versions of Git will lead to problems.&#x000A;!! Please remove old version commands in bindir now.</pre>
+      <p>Akkor törüljük a régi binárisokat a <strong>/usr/local/git/bin</strong> könyvtárból:</p>
+      <pre>rm -f /usr/local/git/bin/*</pre>
+      <p>És futtassuk újra a <strong>sudo make install</strong> parancsot.</p>
+    </p>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

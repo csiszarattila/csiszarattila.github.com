@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>Rails debug tipp - rails-footnotes plugin</h1>
+    <p>Ha még nem hallottál volna a <a href="http://github.com/josevalim/rails-footnotes/wikis">rails-footnotes plugin</a>ról, mindenképp próbáld ki! Feltelepítése után minden oldalhoz hozzáad egy navigációs elemet, amelyről könnyedén elérheted a munkamenetek, sütik, környezeti változók tartalmát:</p>
+    <div class='img'>
+      <img src='http:/csiszarattila.com/rubysztan/images/rails-footnotes-plugin.tiff' />
+      <p>A rails-footnotes plugin bevetés közben</p>
+    </div>
+    <p>Sőt meg is nyithatod a meghívott vezérlőt, nézetet vagy a letöltött css stíluslapok tartalmát a beállított szövegszerkesztődben - alapértelmezettként a <a href="http://macromates.com/">Textmate</a>-el van integrálva. Ez utóbbi funkció elérhető akkor is, ha kivételt dob az alkalmazásunk - így egy kattintással elérhetjük a kivételt produkáló kódsort.</p>
+    <h2>Telepítés</h2>
+    <p>Igazából a plugin dokumentációja minden lényeges pontra kitér, de azért:</p>
+    <p>Ha még nem telepítettünk volna gem-et korábban a GitHub-ról, adjuk hozzá a listánkhoz:</p>
+    <pre>gem sources -a http://gems.github.com</pre>
+    <em>Innentől kezdve, ha egy gemre keresünk a GitHubosokat is kilistázza - a gemek többsége pedig ma már innen érhető el.</em>
+    <p>Telepítsük a gemet a szokásos módon:</p>
+    <pre>sudo gem install josevalim-rails-footnotes</pre>
+    <p>Majd adjuk hozzá az alkalmazásunk fejlesztői környezetéhez. Mivel nyilván nem lenne célszerű éles környezetben is használni ezért a <strong>config/environments/development.rb</strong> fájlban definiáljuk, mint gem függőséget:</p>
+    <pre>config.gem "josevalim-rails-footnotes",  :lib => "rails-footnotes", :source => "http://gems.github.com"</pre>
+    <p>A gem elég jó API-val rendelkezik így akár egyedi tartalmakat is hozzáadhatunk a fülekhez.</p>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

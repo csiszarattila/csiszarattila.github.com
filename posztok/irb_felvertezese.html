@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>IRB felvértezése</h1>
+    <p>Nem tudom ti mennyire használjátok az irb-t. Én szinte mindenre: kisebb Rubys kódok kipróbálására, Railsben pedig kódok debuggolására (ala. script/console). Nagyon hasznos tud lenni, mivel azonnal ki lehet benne kódokat próbálni, a visszaadott értékekkel eljátszadozhatunk, és van kódkiegészítés! (Annak idején ez volt az ami elsőként megtetszett a Rubyban.)</p>
+    
+    <p>Most két gemet ajánlanék az irb-hez ami tovább növelheti a produktivitásunkat. Egyikük az <a href='http://utilitybelt.rubyforge.org/index.html' title='utility_belt gem oldala'>utility_belt</a>, ami hasznos kiegészítésekkel látja el az irb konzolt(szintakszis-kiemelés, művelet-history, stb.).</p>
+    
+    <p>Másik a <a href='http://tagaholic.me/2009/03/13/hirb-irb-on-the-good-stuff.html' title='Hirb bemutatása'>hirb</a>, amely objektumokat táblázatos formában íratja ki, ezáltal jobban átláthatóbbá válnak, ez rails konzol esetén a lekérdezések után visszaadott objektum-kollekciók vizsgálatánál tud nagyon hasznos lenni.</p>
+    
+    <p>A két gemet a legegyszerűbben - a mostmár &#8216;szabvánnyá&#8217; váló - <a href='http://gembundler.com/' title='Bundler gem oldala'>bundlerrel</a> vehetjük használatba, ha hozzáadjuk őket a Gemfile-unkban és futtatjuk a <strong>bundle install</strong> parancsot.</p>
+    
+    <pre><code>group :development do
+      gem &#39;utility_belt&#39;
+      gem &#39;hirb&#39;
+    end</code></pre>
+    
+    <p>A hirb használatához még engedélyeznünk kell azt, a <strong>Hirb.enable</strong> utasítás kiadásával az irb konzolban.</p>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

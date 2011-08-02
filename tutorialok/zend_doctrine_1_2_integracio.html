@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>Zend Framework: Doctrine 1.2 integrálása</h1>
+    <p>Az <a href='/tutorialok/zend_bootstrap.html' title='Zend_Framework bootstrap'>előző cikkben</a> már említettem, hogy maga a Zend keretrendszer teljesen szabd utat biztosít minden komponens tekintetében így az elengedhetetlen adatbáziskezelésre sem nyújt egy konvekciózus megoldást. <em>Szemben mondjuk a Railsszel, amelyben az ActiveRecordot mint defacto megoldás kapjuk.</em></p>
+    
+    <p>Ekkor jön a kérdés, milyen adatbáziskezelő réteget használjunk. Összetett alkalmazások esetében nem lehet kérdés, hogy ne valamilyen ORM megoldást válasszunk. A személyes tapasztalataim szerint PHP-s szinten a napjainkban elérhető legjobb ilyen megvalósítást a Doctrine nyújtja.</p>
+    
+    <p>Lássuk tehát, hogy Én hogyam tudtam megoldani a Doctrine integrációját a <a href='http://github.com/csiszarattila/zendframework_base' title='A projekt Github oldala'>Zend alapú alkalmazásomba</a>.</p>
+    
+    <p><strong>Figyelem az itt leírtak csak a Doctrine 1.2-es változatával működnek.</strong></p>
+    
+    <h2 id='doctrine_mint_bootstrap_resource_plugin'>Doctrine, mint Bootstrap Resource Plugin</h2>
+    
+    <p>Első lépésként világossá vált, hogy a Doctrine-t is, mint bootstrap erőforrásként hozom létre, így később minden további alkalmazásban felhasználhatom. Elsőként saját megoldás írásába kezdtem, később fedeztem fel, hogy a <a href='http://framework.zend.com/wiki/display/ZFDEV/Doctrine+Integration+Todo' title='Doctrine Integration Todo'>Doctrine - Zend keretrendszer integrációját célzó előterjesztés</a> keretében <a href='http://framework.zend.com/wiki/display/ZFPROP/Zend_Application_Resource_Doctrine+-+Matthew+Lurz' title='Zend Application Resource Doctrine Proposal'>már készült egy teljesebb</a> megoldás így ezt használtam fel:</p>
+    
+    <h4 id='1_szerezzk_be_a__cmen_tallhat_forrst_s_teleptsk_a_library_knyvtrunkba'>1. Szerezzük be a <a href='http://github.com/mlurz71/parables'>http://github.com/mlurz71/parables</a> címen található forrást, és telepítsük a library könyvtárunkba.</h4>
+    
+    <p>Én személy szerint szeretem a külső kódjaimat &#8220;hordozhatóvá&#8221; tenni, így git sumoduleként definiáltam:</p>
+    
+    <pre><code>  # config/application.ini
+      git submodule add git://github.com/mlurz71/parables.git library/Parables
+      git submodule init</code></pre>
+    
+    <h4 id='2_majd_regisztrltam_a_libraryparablesapplicationresource__knyvtrt_ez_tartalmazza_a_bootstrap_resourceokat_mint_pluginpath_elrst'>2. Majd regisztráltam a <strong>library/Parables/Application/Resource</strong>_ könyvtárt (ez tartalmazza a Bootstrap Resourceokat), mint PluginPath elérést.</h4>
+    
+    <p>Így a Zend_Application tudni fogja, hogy innen is várhat Bootstrap erőforrásokat. Ezt a regisztrációt elvégezhetjük egyszerűen az alkalmazás konfigurációs állományán keresztül is:</p>
+    
+    <pre><code>  # config/application.ini
+      pluginPaths.parables_Application_Resource = LIBRARY_PATH &quot;/Parables/Parables/Application/Resource&quot;</code></pre>
+    
+    <h4 id='3_ezek_utn_kvetkezhet_a_doctrine_osztlyok_automatikus_betltsnek_hozzadsa'>3. Ezek után következhet a Doctrine osztályok automatikus betöltésének hozzáadása.</h4>
+    
+    <p>Ezt is jelentősen leegyszerűsíthetjük, ha mindössze az Zend alapértelmezett osztálybetöltőjének a namespacei közé kell felvesszük a Doctrine-t, amit ismét csak elérhetünk az alkalmazásunk konfigurációs állományán keresztül a következő sorral:</p>
+    
+    <pre><code>  # config/application.ini
+      autoloaderNamespaces[] = &quot;Doctrine&quot;
+    
+    _Mindezt azért tehetjük meg mert a Doctrine 1.2-es verziója a szabványosabb, PEAR tipusú osztályhierarchia elnevezéseket és elrendezést használja, így a Zend osztálybetöltője minden gond nélkül meg tud bírkózni velük._</code></pre>
+    
+    <h4 id='4_modell_osztlyok_betltse'>4. Modell osztályok betöltése</h4>
+    
+    <p>A modell osztályok betöltése sem nehezebb feladata, viszont itt válaszút elé kerülünk: Használhatjuk a PEAR stílusú osztályelnevezéseket: ahol az osztályokk felveszik a könyvtár hierarchiájukat, így például a model/ könyvtárban levő osztályoknak a Model_ prefixszel kell kezdődniük. Így lesz a Product.php-ban levő Product osztályból Model_Product osztály.</p>
+    
+    <p>Nekem ez kicsit erőltetett és csúnya megoldásnak tűnik - kód szinten szebb a Product osztályra hivatkozni, és márcsak a korábbi alkalmazásokhoz való visszafele kompatibilitás miatt is ragaszkodom a modellek esetében a mindenféle prefix és névtér mentes elnevezésekhez.</p>
+    
+    <p>Sajnos a Zend default osztálybetöltője inkább az előbbi megoldást favorizálja, de lehetőséget ad a névtér nélküli osztálybetöltésre is. Ehhez úgynevezett fallback autoloaderként kell definiálnunk, amelyet a legegyszerűbben a bootstrap osztályunkban tehetünk meg:</p>
+    
+    <pre><code># application/Bootstrap.php 
+    class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+    {
+      protected function _initAutoload()
+      {
+        $autoloader = $this-&gt;getApplication()-&gt;getAutoloader(); 
+        if (!$autoloader-&gt;isFallbackAutoloader()) { 
+          $autoloader-&gt;setFallbackAutoloader(true); 
+        } 
+        return $autoloader; 
+      }
+    }</code></pre>
+    
+    <h2 id='a_doctrine_konfigurlsa'>A Doctrine konfigurálása</h2>
+    
+    <p>Mivel a Doctrine-t szabványos Resourceként definiáltuk, a készítője pedig gondolt a konfigurációs beállítások teljes elérésére, a beállítások többségét könnyedén elérjük az alkalmazás konfigurációs állományán keresztül:</p>
+    
+    <pre><code># config/application.ini
+    resources.doctrine.connections.main.dsn = &quot;mysql://user:pass@localhost/zendfw&quot;
+    resources.doctrine.models_path          = APPLICATION_PATH &quot;/models&quot;</code></pre>
+    
+    <p>A Resource-al elérhető konfigurációs beállításokat megtaláljuk az <a href='http://framework.zend.com/wiki/display/ZFPROP/Zend_Application_Resource_Doctrine+-+Matthew+Lurz' title='Zend Application Resource Doctrine Proposal'>előterjesztés címén</a>.</p>
+    
+    <h2 id='zrsz'>Zárszó</h2>
+    
+    <p>Az eddig bemutatott technikákat felhasználva elérhető a legújabb Zend keretrendszer-verzióra épülő alkalmazásváz, a Github-on<span>http://github.com/csiszarattila/zendframework_base</span> keresztül.</p>
+    
+    <p>Az alkalmazásváz folyamatos fejlesztés alatt ál, így érdemes a figyeltek közé tenni Githubon, de akár várom a hasznos committokat is. A fejlesztéshez kapcsolódó sorozat pedig folytatódik&#8230;</p>
+    
+    <h2 id='a_sorozatban_eddig_megjelent'>A sorozatban eddig megjelent</h2>
+    
+    <p><a href='/tutorialok/zend_bootstrap.html' title='Zend_Framework bootstrap'>Zend Framework: Zend_Application + Bootstrap + Resource</a></p>
+    
+    <p><a href='/tutorialok/zend_doctrine_1_2_integracio.html' title='Leírás a Zend_Framework-Doctrine integrációról'>Zend Framework: Doctrine 1.2 integrálása</a></p>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>Ruby blokkok közelebbről</h1>
+    <p>A mai célünk megtanulni, hogy a következő kifejezés:</p>
+    <pre>Array.new(3) { n += 1; n * 10 }&#x000A;=>[10, 20, 30]</pre>
+    <p>mit is jelent, hogyan is működik pontosan.</p>
+    <p>A Ruby fontos nyelvi elemeit jelentik a blokkok, amelyet szinte minden, Ruby-t használó programozó ismer, a kérdés csak csupán az, tudja is hogy hogyan is működik?</p>
+    <p>Sokak számára rémisztőnek tűnnek, de a blokkok működésének megértése nem igényel bonyolult logikát,</p>
+    ugyanakkor használatuk nagy segítséget jelenthet bizonyos problémák egyszerű megoldásában.
+    <p>A következőekben példákkal szeretném bemutatni, hogyan használhatjuk a blokkokat Rubyban.</p>
+    <h2>Hogyan készítsünk saját blokkot kezelő metódust</h2>
+    <p>Azt már tudjuk hogyan adhatunk át blokkot egy metódusnak:</p>
+    <pre>Array(1, 2, 3).each() {&#x000A;  # Ez itt egy blokk&#x000A;}</pre>
+    <p>vagy más formában:</p>
+    <pre>Array(1, 2, 3).each() do&#x000A;  # Ez is egy blokk&#x000A;end&#x000A;</pre>
+    <em>Én személy szerint a <strong>do end</strong> kulcsszavas megadást többsoros, a kapcsos zárójeleket pedig rövid, egy sorban is elférő utasítású blokkok esetében használom.</em>
+    <p>Vizsgáljuk meg ezek működését kicsit közelebbről:</p>
+    <pre>class MyBlock&#x000A;  def handle_block  (2)&#x000A;    puts "A metódus megkapta a vezérlést"&#x000A;    yield   (1)&#x000A;    puts "A blokk visszaadta a vezérlést a blokknak"&#x000A;  end&#x000A;end&#x000A;</pre>
+    <pre>MyBlock.handle_block() do&#x000A;  puts "A metódus átadta a vezérlést a blokknak"&#x000A;end&#x000A;</pre>
+    <p>Első ízben a metódusunk hívódik meg(1), a (2) yield nyelvi elem szolgál a blokkok 'vezérlésére'.</p>
+    <p>Amint az látható a metódusokban ezzel tudjuk a program további futását átadni a kapott blokknak,</p>
+    majd ha az végzett a feladataival újból visszaadja a vezérlést a metódusunknak.
+    Természetesen a yieldet akárhányszor meghívhatjuk a metódusunkban: az mindannyiszor átadja a vezérlést a blokknak, majd visszatér.
+    Most nézzük meg hogyan tudunk paramétereket is átadni a blokkunknak:
+    <pre>class MyBlock&#x000A;  def handle_block&#x000A;    puts "A metódus megkapta a vezérlést"&#x000A;    n=1&#x000A;    while(n < 4)&#x000A;      yield(n)&#x000A;      n += 1&#x000A;    end&#x000A;    puts "A blokk visszaadta a vezérlést a blokknak"&#x000A;  end&#x000A;end&#x000A;&#x000A;MyBlock.handle_block() { |value|  puts value }&#x000A;=> 1 2 3&#x000A;</pre>
+    <p>A metódus a yield(n) meghívásával ad át paramétereket a blokknak, míg a blokk a |value| kifejezéssel vesz át paramétereket. A blokk esetében tehát a neki átadott paramétereket a || (pipes - csövek) jelek közé kell tennünk, a yield()-t pedig a megfelelő paraméter sorrenddel kell ellátnunk.</p>
+    <h2>Blokk visszadott értéke</h2>
+    <p>De hogyan tudjuk a blokk visszaadott értékét felhasználni. Például tételezzük fel, hogy egy blokk segítségével képezünk értékeket és azok segítségével létrehozzuk az objektum adott attribútumait.</p>
+    <pre>class Szazadok&#x000A;  attr_reader :values&#x000A;  def initialize(size)&#x000A;    n = 0; @ertekek = []&#x000A;    size.times do&#x000A;      n += 1&#x000A;      value = yield(n) (1)&#x000A;      @values << value&#x000A;    end&#x000A;    end&#x000A;end&#x000A;&#x000A;Szazadok.new(3){ |n| n.to_s.upper+".század"(2) }&#x000A;p Szazadok.values => ["1.század","2.század","3.század"]&#x000A;</pre>
+    <p>A lényeg az (1)-sel megjelölt kifejezésnél van, azaz a blokk visszatérő értékét(2) a yield kifejezés(metódus?) visszatérési értéke tartalmazza. Emlékezzünk csak, hogy a Ruby nyelvben egy kódblokk esetében a visszatérési érték mindig a legutolsónak kiértékelt sor visszaadott értéke - ha nem bíráljuk felül egy megfelelő helyre beszúrt <strong>return</strong> kulcsszóval.</p>
+    <p>A initialize metódus pedig a neki átadott értékből (3) tudja, hogy hányszor kell a neki átadott blokkot meghívnia.</p>
+    <p>
+      <em>Természetesen a fenti programot ennél sokkal egyszerűbben is megoldhattuk volna, ezúttal csak a blokkok visszatérési értékének bemutatása volt a fő célom.</em>
+    </p>
+    <p>Pontosan ez a működés zajlik le, amikor meghívjuk a bejegyzés elején bemutatott példát:</p>
+    <pre>Array.new(3) { n += 1; n * 10 }&#x000A;=>[10, 20, 30]</pre>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>A CouchDB találkozása a Rubyval</h1>
+    <p><a href="couchdb">A bejegyzés első részében láthattuk</a>, hogy a REST API-nak köszönhetően hogyan tudjuk a CouchDB-t elérni és használni. Mindez azt jelenti, hogy erre építve Rubyban is nagyon egyszerűen tudunk az adatbáziskezelővel kommunikálni, a <a href="http://wiki.apache.org/couchdb/Getting_started_with_Ruby"> CouchDB dokumentációjában találunk is egy ezt megvalósító osztályt</a>.</p>
+    <p>A HTTP kommunikációt érdemes a Ruby beépített Net::HTTP moduljára bízni. Ami fontosabb, hogy nyilván nem JSON adatformátummal, hanem Ruby osztályokkal szeretnénk dolgozni: az adatbázisból érkező adatokat Ruby objektumokként kapjuk meg, majd ugyanígy, az adatbázisba íráskor is el tudjunk menteni a Ruby objektumokat. A JSON gem ezt az "átjárást" meg is valósítja a számunkra, tehát különösebb aggályunk ezzel kapcsolatban sem lehet.</p>
+    <p>Ennek tükrében nem is csoda, hogy több Ruby interfész is készült a CouchDB-hez, amelyek elvégzik helyettünk a "piszkos munkát". A következőkben ezek használatával ismerkedhetünk meg.</p>
+    <h2>CouchRest</h2>
+    <h4>Telepítés:</h4>
+    <pre>sudo gem install couchrest</pre>
+    <p>A CouchRest igazán leegyszerűsíti a dolgunkat. Elég mindössze egy URL segítségével csatlakozást létrehozni a CouchDB-s adatbázisunkhoz, a csatlakozást pedig referencia-változóként felhasználva műveleteket végezni:</p>
+    <pre>require 'rubygems'&#x000A;require 'couchrest'&#x000A;&#x000A;@db = CouchRest.database!("http://localhost:5984/books")&#x000A;&#x000A;doc = @db.get("couchdb_cikk")&#x000A;=> {"_rev"=>"3172282319", "_id"=>"couchdb_cikk", &#x000A;  "_attachments"=>{"csatolt.txt"=>{"content_type"=>"text/plain", "stub"=>true, "length"=>18}}}<span class="signal">1</span>&#x000A;&#x000A;response = @db.save(&#x000A;  {&#x000A;    "id"=>"wpgtr",&#x000A;    :title=>"Why's (poignant) guide to Ruby", &#x000A;    :author=>"why the lucky stiff",&#x000A;    :motto=>"chunky bacon!",&#x000A;    :chapters=>&#x000A;    [&#x000A;      "Kon’nichi wa, Ruby",&#x000A;      "A Quick (and Hopefully Painless) Ride Through Ruby (with Cartoon Foxes)",&#x000A;      "Floating Little Leaves of Code"&#x000A;    ]&#x000A;  }<span class="signal">2</span>&#x000A;)&#x000A;&#x000A;response&#x000A;=> {"rev"=>"887962467", "id"=>"wpgtr", "ok"=>true}&#x000A;&#x000A;@db.view('posts/find_by_title')<span class="signal">3</span>&#x000A;</pre>
+    <p>Mint látható az adatokat egyszerű Ruby hashekként tudjuk kezelni<span class="signal">1</span><span class="signal">2</span>. A nézetek létrehozása és lekérdezése<span class="signal">3</span> sem nehézkes hála a REST API-nak.</p>
+    <p>A CouchRest ráadásul rendelkezik egy beépített ORM megoldással a CouchRest::Model osztállyal, ha hash-ek helyett kicsit objektum-orientáltabban szeretnénk kezelni az adatokat, például modelleket szeretnénk alkalmazni.</p>
+    <p>Használatához előbb telepítsük az extlib gem-et mivel ez valahogy kimaradt a CouchRest függőségei közül.</p>
+    <pre>sudo gem install extlib</pre>
+    <p>Nézzünk a használatára egy teljes példát:</p>
+    <pre>require 'rubygems'&#x000A;require 'couchrest'&#x000A;&#x000A;class Book < CouchRest::Model&#x000A;  use_database CouchRest.database('http://localhost:5984/books')&#x000A;  &#x000A;  key_accessor :title, :author, :category <span class="signal">1</span>&#x000A;  cast :author, :as=> 'Author' <span class="signal">2</span>&#x000A;  &#x000A;  view_by :ruby, <span class="signal">3</span>&#x000A;  :map=>"function(doc){ if(doc.category == 'ruby') emit(null,doc) }"&#x000A;  &#x000A;  unique_id :title <span class="signal">5</span>&#x000A;  before(:save, :convert_title) <span class="signal">5</span>&#x000A;  def convert_title <span class="signal">5</span>&#x000A;    self["title"] = title.gsub(/ /,'_')&#x000A;  end&#x000A;  &#x000A;end&#x000A;&#x000A;class Author < CouchRest::Model <span class="signal">2</span>&#x000A;  key_accessor :name&#x000A;end&#x000A;&#x000A;rails_book = Book.new&#x000A;&#x000A;rails_book.title= "Ruby for Rails" <span class="signal">1</span>&#x000A;dt = Author.new() &#x000A;dt.name= "Dave Thomas" <span class="signal">2</span>&#x000A;rails_book.author.name= dt <span class="signal">1</span>&#x000A;rails_book.category= "rails" <span class="signal">1</span>&#x000A;&#x000A;rails_book.save&#x000A;&#x000A;rails_book = Book.all[0]&#x000A;rails_book.update_attributes({:author=>{:name=>"David A. Black"},:category=>"ruby"})&#x000A;&#x000A;Book.all[0].author.name <span class="signal">4</span>&#x000A;&#x000A;Book.by_ruby <span class="signal">3</span>&#x000A;=> [{"category"=>"ruby", "author"=>{"name"=>"David A. Black", "couchrest-type"=>"Author"},&#x000A;   "title"=>"Ruby_for_Rails", "_rev"=>"2415607020", "_id"=>"Ruby_for_Rails", "couchrest-type"=>"Book"}]&#x000A;&#x000A;</pre>
+    <p>Ahhoz, hogy a dokumentumunk tulajdonságait metódusokkal érhessük el<span class="signal">1</span>, előbb definiálnunk kell őket a <strong>key_accessor</strong>ral, a Ruby setter/getter segédmetódusaihoz hasonlatosan. A tulajdonságokat lehetőség van osztályokra<span class="signal">2</span> is leképezni, tehát nemcsak az egyszerű Ruby típusokat (Array,String,Hash stb.) használhatjuk. A modellekhez nézeteket is definiálhatunk<span class="signal">3</span> - ezek bekerülnek az adatbázisba is -, amelyeket metódusokként hívhatunk meg. Beépítettként is kapunk párat, például az <span class="signal">4</span> összes dokumentumot visszaadó all-t, de ugyanígy a tulajdonságokkal is (pl. by_title), amelyeket lehetőségünk van egymásba is ágyazni, a Rails named_scope-jaihoz hasonlatosan.</p>
+    <p>Az unique_id lehetővé teszi, hogy egy metódust megnevezzünk<span class="signal">5</span>, amelyben azután egyedi azonosítót generálunk, ez kerül majd az dokument _id mezőjébe - a fenti példában a könyv címét (title attribútum) használtuk fel erre.</p>
+    <p>A CouchRest::Model egy egész jól használható ORM, ráadásul sok hasonlóságot mutat az ActiveRecorddal, így használata nem jelent túl nagy gondot, ugyanakkor nem túl biztos a jövője: a fejlesztése leállt és valószínűleg <a href="http://groups.google.com/group/couchrest/browse_thread/thread/fe83daccf26128d8">hamarosan ki is kerül a CouchRest gem-ből</a>.</p>
+    <p>Szerencsére azonban vannak alternatíváink.</p>
+    <h2>CouchObject</h2>
+    <h4>Telepítés:</h4>
+    <pre>sudo gem install couchrest</pre>
+    <p>A CouchObject a CouchResthez képest kibővített utasításokkal, és APIval rendelkezik. Igazából A CouchObjectet kellene CouchRestnek hívni, mivel az adatbázis-kezelést illetően a metódusok működése jobban illeszkedik a REST elvekhez. Ehhez lásd a következő példát:</p>
+    <pre>require 'rubygems'&#x000A;require 'couch_object'&#x000A;require 'json'&#x000A;&#x000A;db = CouchObject::Database.open("http://localhost:5984/books")&#x000A;&#x000A;doc = db.get('wpgtr') &#x000A;=>#&lt;CouchObject::Response:0x14db2f4 ...&gt;&#x000A;&#x000A;# JSON formátum&#x000A;doc.body&#x000A;=> "{\"_id\":\"wpgtr\",\"_rev\":\"1415663406\" ... }"&#x000A;# Ruby formátum&#x000A;doc.parsed_body&#x000A;=> {"title"=>"Why's (poignant) guide to Ruby", &#x000A;  "chapters"=>&#x000A;  [&#x000A;    "Kon’nichi wa, Ruby", &#x000A;    "A Quick (and Hopefully Painless) Ride Through Ruby (with Cartoon Foxes)", &#x000A;    "Floating Little Leaves of Code"&#x000A;  ]}&#x000A;&#x000A;wpgtr_expak_one = {&#x000A;  :title=>"Expansion Pak I: The Tiger’s Vest",&#x000A;  :author=>"why the lucky stiff",&#x000A;  :description=>"There was once a tiger who wore a vest, but that wasn't his biggest problem.&#x000A;   Because the earth was going to crash into the Sun!"&#x000A;}&#x000A;&#x000A;db.put('wpgtr',JSON.unparse(wpgtr_expak_one))&#x000A;=>#&lt;CouchObject::Response:0x14d8388 ..&gt;&#x000A;</pre>
+    <p>A CouchObject minden kéréskor egy <strong>CouchObject::Response</strong> objektummal válaszol, amelyben megtaláljuk a HTTP fejléceket is - így kicsit könnyebb dolgunk van a hibák kezelésekor - ráadásul elérhetjük mind az eredeti JSON üzenetet ( <strong>body</strong> ), mind a Ruby objektumokra átalakítottat ( <strong>parsed_body</strong> ) egy egy metódussal.</p>
+    <p>Érdekesség, hogy a nézeteket nemcsak a get metódussal és kéréssel érhetjük el, hanem objektumokként (<strong>CouchObject::View</strong>) is definiálhatjuk őket. Példaként hozzunk létre egy _desing/books/all nevű nézetet, majd kérdezzük le az eredményét:</p>
+    <pre>db = CouchObject::Database.open("http://localhost:5984/books")&#x000A;&#x000A;CouchObject::View.create(db,"books",'{ "language": "javascript",&#x000A;"views" : {"all" : {"map" : "function(doc) {emit(null,doc)}"}} }')&#x000A;&#x000A;CouchObject::View.new(db,"books/all").query&#x000A;</pre>
+    <p>A CouchObject rendelkezik egy speciális osztállyal(<strong>CouchObject::Document</strong>) is, amely egyszerűbbé teszi a JSON-ban kapott dokumentumok kezelését:</p>
+    <pre>doc = db.get("wpgtr")&#x000A;&#x000A;wpgtr = doc.to_document # => #&lt;CouchObject::Document ...&gt;&#x000A;&#x000A;wpgtr.title # => "Why's (poignant) guide to Ruby"&#x000A;wpgtr.author # => "why the lucky stiff"&#x000A;&#x000A;wpgtr["characters"] = ["The elf with a pet ham","Trady Blix", "Starmonkey"]&#x000A;&#x000A;wpgtr.save(db)&#x000A;</pre>
+    <p>Emlékezz, hogy a CouchObject a kérések válaszaiként nem egy dokumentumot, hanem mindig egy Response objektumot ad vissza, így ez tartalmazza a a JSON választ is. Ebből egyszerűen a <strong>to_document</strong> metódussal tudunk egy CouchObject::Document objektumot visszaadni, ezzel a Hash-ekhez képest némileg egyszerűbben tudjuk a dokumentum tulajdonságait elérni/szerkeszteni.</p>
+    <p>Egy másik hasznos megoldás a <strong>CouchObject::Persistable</strong> modul, amellyel Rubys objektumainkat tudjuk CouchDB dokumentumokká alakítani. Használatához elég a modult be 'mixin-elni' az osztályunkba, és máris elérhetővé válnak a CouchDB-t elérő metódusok - így lehetővé válik az objektumok dokumentumokká alakítása majd lekéréskor a visszaalakításuk:</p>
+    <pre>class Book&#x000A;  include CouchObject::Persistable&#x000A;  database 'http://localhost:5984/books' <span class="signal">1</span>&#x000A;&#x000A;  attr_accessor :author, :title, :year&#x000A;&#x000A;  def initialize(author, title, year)&#x000A;    @author, @title, @year = author, title, year&#x000A;  end&#x000A;&#x000A;  def self.from_couch(attributes)&#x000A;    new attributes["author"], attributes["title"], attributes["year"]&#x000A;  end&#x000A;end&#x000A;&#x000A;data = Book.new("Ruby for Rails", "David A. Black", 2005).save() &#x000A;=> {:revision=>"374633541", :id=>"6f2f22fc0e80a76fd253365201e243c1"}&#x000A;&#x000A;rfr = Book.get(data[:id]) &#x000A;=> #&lt;Book:0x14d5fd4 ...&gt;&#x000A;</pre>
+    <p>Az osztályunkban opcionálisan megadhatjuk mely adatbázist használja<span class="signal">1</span> mentéskor illetve lekéréskor, így nem kell minden alkalommal a <em>save</em> és <em>get</em> metódusoknak megadnunk az elérést. A CouchObject a mentés illetve a visszaalakítás segítésére két metódust a <strong>to_couch</strong> ill. a <strong>from_couch-t</strong> is a rendelkezésünkre bocsájtja. Ezekkel kicsit bonyolultabb logikát rendelhetünk az objektumok dokumentumokból való visszaállításakor és fordítva. Ha a konstruktorunk például paramétereket is vár, akkor utóbbit mindenképpen használnunk kell máskülönben a CouchObject nem tudja majd az objektumot létrehozni a dokumentumból.</p>
+    <p>A CouchObject is lehetővé teszi, hogy adott attribútumokat további osztályokra képezzünk le - a CouchResthez hasonlóan.</p>
+    <pre>class Book&#x000A;  ...&#x000A;  def initialize(author, title, year)&#x000A;  <strong>@author = Author.new(author)</strong><span class="signal">1</span>&#x000A;  @title, @year = title, year&#x000A;  end&#x000A;  ...&#x000A;end&#x000A;&#x000A;class Author&#x000A;  include CouchObject::Persistable&#x000A;&#x000A;  def initialize(name)&#x000A;    @name = name&#x000A;  end&#x000A;end&#x000A;&#x000A;rfr = Book.get('18c7df416f4f5cea94b1e420c614d4a1') &#x000A;rfr.author&#x000A;=> #&lt;Author ...&gt;&#x000A;</pre>
+    <em>A példát tekintsd úgy, mintha az előző példa Book osztályát felüldefiniáltuk volna.</em>
+    <p>Ebben az esetben az attribútum értéke közvetlenül a dokumentumban tárolódik<span class="signal">1</span>, de a CouchObject - a CouchResthez képest pluszként - lehetővé teszi, hogy más dokumentumokra is hivatkozhassunk. Így a relációs adatbázisoknál megszokott kapcsolatokat (N-N, 1-N, 1-1) is létrehozhatunk az egyes dokumentumok és osztályok között - mint látni fogjuk ez a funkció nagyon hasonlít az ActiveRecord megoldásához. Nézzünk erre is egy példát:</p>
+    <pre>class Book&#x000A;  include CouchObject::Persistable&#x000A;  database 'http://localhost:5984/books'&#x000A;&#x000A;  belongs_to :publisher, :as => :books&#x000A;end&#x000A;&#x000A;class Publisher&#x000A;  include CouchObject::Persistable&#x000A;  database 'http://localhost:5984/books'&#x000A;&#x000A;  has_many :books&#x000A;end&#x000A;&#x000A;book = Book.get('18c7df416f4f5cea94b1e420c614d4a1') &#x000A;book.publisher = Publisher.new()&#x000A;book.save&#x000A;&#x000A;book.publisher.books[0] == book &#x000A;=> true&#x000A;</pre>
+    <em>Ismét csak tekintsd úgy, mintha az előző példánk osztályait kiterjesztettük volna.</em>
+    <p>Mint talán észrevetted a kapcsolatok a:</p>
+    <pre>belongs_to :kapcsolat_neve, :as => :has_many_kapcsolat_neve&#x000A;has_many :has_many_kapcsolat_neve&#x000A;</pre>
+    <p>elnevezést követik, és ez ugyanígy alkalmazható az 1-1 kapcsolatokhoz is - itt ugye a has_one, belongs_to párost kell használnunk. Ezzel már tulajdonképpen elég kényelmes kis kapcsolati hálót tudunk létrehozni az osztályok és így az objektumok között, komplex dokumentumok kezelésénél ez mindenképp jól jöhet.</p>
+    <p>Ugyanakkor arra figyeljünk, hogy mind a CouchObject, mind a CouchRest 'teleszemeteli' a dokumentumokat az tulajdonságokhoz tartozó osztályok nevével és ez nem féltétlenül hasznos akkor, ha a Rubyban írt alkalmazáson kívül is szeretnénk az adatainkat lekérdezni és használni.</p>
+    <p>Végül harmadik versenyzőként a RelaxDB-t nézzük meg.</p>
+    <h2>RelaxDB</h2>
+    <h4>Telepítés</h4>
+    <p>Ha még nem tettük volna, ezzel a paranccsal adjuk hozzá a gemforrások listájához a GitHubot:</p>
+    <pre>gem sources -a http://gems.github.com</pre>
+    <p>Majd a gem telepítéséhez adjuk ki a következő parancsot:</p>
+    <pre>sudo gem install paulcarey-relaxdb</pre>
+    <p>A RelaxDB sokkal inkább egy ORM megoldás, mint egy szimpla Ruby interfész a CoucDB-hez - ami egyfelől jó, mert mindent a kezünkbe ad, de túlkomplikálttá is teheti a dolgokat amikor valami egyszerűbb megoldásra vágyunk.</p>
+    <p>Elsőként lássuk az előző példa megoldását a RelaxDB segítségével:</p>
+    <pre>require 'rubygems'&#x000A;require 'relaxdb'&#x000A;&#x000A;RelaxDB.configure :host => 'localhost', :port => 5984&#x000A;RelaxDB.use_db 'books'&#x000A;&#x000A;&#x000A;class Book < RelaxDB::Document&#x000A;  property :author&#x000A;  property :title&#x000A;  property :year, :validator => lambda{ |y| y > 2005}, :validation_msg => "2005 előtt nem is volt Rails"&#x000A;&#x000A;  belongs_to :publisher, :class => 'Publisher'&#x000A;end&#x000A;&#x000A;class Publisher < RelaxDB::Document&#x000A;&#x000A;  has_many :books&#x000A;end&#x000A;&#x000A;Book.new({:title=>"Agile Web Development with Rails", :author=>"Dave Thomas", :year=>2006, '_id'=>"awdwr"}).save&#x000A;&#x000A;book = Book.new({:title=>"Yet Another Rails book", :year=>2002 })&#x000A;book.save&#x000A;=> false&#x000A;book.errors&#x000A;=> {:year=>"2005 előtt nem is volt Rails"}&#x000A;&#x000A;book.publisher = Publisher.new()&#x000A;</pre>
+    <p>A RelaxDB esetében explicite meg kell adnunk a modellünk tulajdonságait, viszont mindjárt rendelhetünk melléjük validátorokat is, ez elég kezdetleges megoldás de működik. A kapcsolatok létrehozása is a már szokott módon történik - a RelaxDB amúgy is meglehetősen az ActiveRecord konvencióit követi, úgyhogy sok meglepetés nem érhet bennünket.</p>
+    <p>A RelaxDB hátránya ugyanakkor, hogy abszolút nincs dokumentálva. Az elinduláshoz jó alapot nyújt a gem README fájlának az elolvasása, de egyébként a forráskód tanulmányozására lesz szükségünk, ha minden funkcióját szeretnénk megtalálni. Ebben a programhoz írt tesztek átfutása jó szolgáltatot tehet. Arra azonban ügyeljünk, hogy a legújabb gem már a CouchDB trunk (0.9-es) változatára épít, így sok funkciót nem érhetünk el a MacPortson keresztül telepített 0.8.1-es CouchDB-ben.</p>
+    <p>Sajnos nekem bővebb lehetőségem nem volt elmerülni a RelaxDB-ben, mindenesetre ígéretesnek tűnik, mégha kicsit más koncepcióban - inkább ORM - közelíti is meg a CouchDB elérését.</p>
+    <h2>Összefoglaló</h2>
+    <p>Remélem ez a két hosszúra nyúlt bejegyzés nem vette el senki kedvét és tesz egy próbát a CouchDB-vel. A koncepciója kissé szokatlan, de a világos és tiszta REST API-nak köszönhetően nagyon gyorsan beletanulhatunk. Ráadásul, mint láttuk Rubyban is egyszerűen használhatjuk: a változatos interfészek közül még válogathatunk is - Én a fentiek közül a CouchObjectre tenném a voksom - , vagy akár belevághatunk egy saját implementálásába is. Ezután pedig jöhetnek a CouchDB-ben írt alkalmazások, nekem már van is egy ötletem...</p>
+    <h2>További olvasnivalók</h2>
+    <p>
+      <strong>
+        <a href='couchdb'>A bejegyzés első része: CouchDB - szakítás a relációs adatbázisokkal</a>
+      </strong>
+    </p>
+    <p>
+      <a href='http://jan.prima.de/~jan/plok/archives/129-Another-week-or-two-in-CouchDB.html'>Érdekes projektek és sok-sok link a CouchDB-ről</a>
+    </p>
+    <p>
+      <a href='http://aimee.mychores.co.uk/2008/09/07/post/320/'>Nyolc részes cikksorozat szintén a CouchDB használatáról Rubyban</a>
+    </p>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='ruby, szeged ruby, szolnok ruby, zend php, webprogramozás, webfejlesztés, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='rubysztan'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    Rubysztán
+  </h1>
+  <div id='nav'>
+    <a href='/rubysztan/'>Rubysztán(blog)</a>
+    /
+    <a href='/cv/'>CV</a>
+    /
+    <a href='/kapcsolat/'>Kapcsolat</a>
+    /
+    <a href='http://github.com/csiszarattila'>Github</a>
+  </div>
+  <div id='container'>
+    <div id='rubysztan-nav'>
+      <p>
+        Változatos
+        <a href='/irasok'>írások</a>
+        és
+        <a href='/olvasasok'>olvasnivalók</a>
+        egy webfejlesztő mindennapjaiból.
+      </p>
+      <p id='rss'>
+        <img src='/images/rss.gif' style='vertical-align:middle'>
+          <a href='http://feeds.feedburner.com/rubysztan' rel='alternate' type='application/rss+xml'>Kövess!(RSS)</a>
+        </img>
+      </p>
+    </div>
+    <div class='index'>
+      <div class='published'>
+        <span class='day'>27</span>
+        2010 November
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/elso_rails_project.html'>Első railsszes project...done</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Hát ezt is megértük&#8230; elindult az első <a href='http://www.euxpert.com/'>éles Railsszes alkalmazás (Euxpert)</a> amiben én is közreműködtem. Igaz a fejlesztés javarészt már készen volt és rám már csak az utolsó módósítások, finomítások vártak, de így is hatalmas tapasztalatot jelentett.</p>
+        
+        <p>Röviden néhány technikai fogás:</p>
+        
+        <ul>
+        <li>
+        <p><a href='http://wiki.opscode.com/display/chef/FAQ'>Chef</a> A szerver üzemeltetésére chefet használunk, Linode alapokon. Tulajdonképpen ez volt a legfőbb feladatom. Többnyire az opscode cookbookjai beváltak, egy-két saját egyedi recepttel vegyítve.</p>
+        </li>
+        
+        <li>
+        <p>Solr A szöveges keresés Solr szerveren keresztül történik. A <a href='https://github.com/outoftime/sunspot'>Sunspot</a> gemmel egyszerűen megoldható a Railsszes integráció. Csak egy tanács: élesben ne használjátok a sunspot beépített Solr szerverét!</p>
+        </li>
+        
+        <li>
+        <p><a href='https://github.com/plataformatec/devise'>Devise</a> Dont reinvent the weel: user/accountok kezeléséhez.</p>
+        </li>
+        
+        <li>
+        <p><a href='https://github.com/jamesgolick/resource_controller'>Resource controller</a> Mint az előbbi csak a kontrollerek &#8220;tisztán&#8221; tartására. Must have.</p>
+        </li>
+        
+        <li>
+        <p>Haml, Sass, Compass A Hamlról már írtam. A <a href='http://compass-style.org'>Sass+Compass</a> páros pedig verhetetlen. Próbáljátok ki!</p>
+        </li>
+        
+        <li>
+        <p><a href='http://hoptoadapp.com/pages/home'>Hoptoad</a> A futás közbeni hibák elkapására, értesítésre.</p>
+        </li>
+        
+        <li>
+        <p><a href='http://www.newrelic.com'>New relic rpm</a> Teljesítmény mérésre.</p>
+        </li>
+        
+        <li>
+        <p><a href='http://lighthouseapp.com'>Lighthouse</a> Bugok, feladatok nyomon követésére.</p>
+        </li>
+        </ul>
+        
+        <p>Persze a feladat döntő része viszont most jön, hiszen egy dolog elindítani valamit és utána tovább fejleszteni:) &#8230;Ohh by the way mostanában az <a href='http://www.pragprog.com/titles/achbd/the-rspec-book'>Rspec könyvet</a> olvasgatom.</p>
+      </div>
+      <div class='published'>
+        <span class='day'>31</span>
+        2010 Augusztus
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/irb_felvertezese.html'>IRB felvértezése</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Nem tudom ti mennyire használjátok az irb-t. Én szinte mindenre: kisebb Rubys kódok kipróbálására, Railsben pedig kódok debuggolására (ala. script/console). Nagyon hasznos tud lenni, mivel azonnal ki lehet benne kódokat próbálni, a visszaadott értékekkel eljátszadozhatunk, és van kódkiegészítés! (Annak idején ez volt az ami elsőként megtetszett a Rubyban.)</p>
+        
+        <p>Most két gemet ajánlanék az irb-hez ami tovább növelheti a produktivitásunkat. Egyikük az <a href='http://utilitybelt.rubyforge.org/index.html' title='utility_belt gem oldala'>utility_belt</a>, ami hasznos kiegészítésekkel látja el az irb konzolt(szintakszis-kiemelés, művelet-history, stb.).</p>
+        
+        <p>Másik a <a href='http://tagaholic.me/2009/03/13/hirb-irb-on-the-good-stuff.html' title='Hirb bemutatása'>hirb</a>, amely objektumokat táblázatos formában íratja ki, ezáltal jobban átláthatóbbá válnak, ez rails konzol esetén a lekérdezések után visszaadott objektum-kollekciók vizsgálatánál tud nagyon hasznos lenni.</p>
+        
+        <p>A két gemet a legegyszerűbben - a mostmár &#8216;szabvánnyá&#8217; váló - <a href='http://gembundler.com/' title='Bundler gem oldala'>bundlerrel</a> vehetjük használatba, ha hozzáadjuk őket a Gemfile-unkban és futtatjuk a <strong>bundle install</strong> parancsot.</p>
+        
+        <pre><code>group :development do
+          gem &#39;utility_belt&#39;
+          gem &#39;hirb&#39;
+        end</code></pre>
+        
+        <p>A hirb használatához még engedélyeznünk kell azt, a <strong>Hirb.enable</strong> utasítás kiadásával az irb konzolban.</p>
+      </div>
+      <div class='published'>
+        <span class='day'>23</span>
+        2010 Augusztus
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/markitup_textare_szerkeszto_alternativa.html'>markItUp! Böngészős szövegszerkesztő alternatíva</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Végre egy számomra is megfelelő textareas szövegszerkesztő alternatíva: <a href='http://markitup.jaysalvat.com/home/' title='markItUp!'>markItUp</a></p>
+        
+        <p>JQuery alapú, kicsi, több markup nyelvet is tud(HTML, Textile, Markdown stb.) baromi könnyen konfigurálható, és kiterjeszhető.</p>
+        
+        <p>Én a Markdown editor lőttem be, ráadásul pár óra alatt sikerült hozzáfaragnom egy képfeltöltős/beillesztős plugint is, annak ellenére, hogy nem vagyok egy JS guru.:)</p>
+      </div>
+      <div class='published'>
+        <span class='day'>20</span>
+        2010 Június
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/videok_ipod_formatumra_alakitasa.html'>Videók Ipod formátumra hozása egyszerűen</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Mivel hetente kétszer megteszem a Szeged-Törökszentmiklós távot a hosszú utazás alatt lehetőleg szeretem hasznosan eltölteni az időt, ami gyakorlatilag teljes Rubys content-fogyasztást jelent:), főleg mióta szert tettem egy Ipod Touchra. Viszont nem minden videó-formátumot hajlandó lejátszani, az iTunes beépített videó-konvertálója pedig lassú&#8230;nagyon lassú.</p>
+        
+        <p>Persze ilyenkor rögtön kibújuk az emberből a unixos ösztön:) és az ffmpeg-re gondol mint megoldás, nekem viszont most nem volt kedvem paranccsorban vacakolni, a szükséges libraryk telepítéséről nem is beszélve.</p>
+        
+        <p>Szerencsére egy kis guglizás után kiderült, hogy létezik az ffmepg alá írt grafikus kliens <a href='http://www.ffmpegx.com' title='ffmpegX-re épülő OSX grafikus felület'>ffmpegX</a> néven. Ami tényleg gyors és némileg egyszerűbb is.(DHH 70perces Railsconfos videóját pl. fél óra alatt átkonvertálta:).</p>
+      </div>
+      <div class='published'>
+        <span class='day'>07</span>
+        2010 Június
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <img src='/images/world.png' />
+        <h3>
+          <a href='http://railsdispatch.com/posts/upgrading-a-rails-2-app-to-rails-3'>Upgrading a Rails 2 App to Rails 3</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>A great blogpost about what changes in Rail 3 fundamentally and how to deal with it when you are planning to upgrade your 2.x app.</p>
+      </div>
+      <div class='published'>
+        <span class='day'>18</span>
+        2009 December
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/zend_bootstrap.html'>Zend Framework: Zend_Application + Bootstrap + Resource</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>A következő a cikksorozatokban - a Rubysztán blog történetében először - PHP-s témára kerül a sor, méghozzá a mostanság két legdivatosabb library, a Zend keretrendszer és a Doctrine összehangolására. Railsszel fejlesztők fig...
+        <a href='/tutorialok/zend_bootstrap.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>18</span>
+        2009 December
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/zend_doctrine_1_2_integracio.html'>Zend Framework: Doctrine 1.2 integrálása</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Az <a href='/tutorialok/zend_bootstrap.html' title='Zend_Framework bootstrap'>előző cikkben</a> már említettem, hogy maga a Zend keretrendszer teljesen szabd utat biztosít minden komponens tekintetében így az elengedhetetlen adatbáziske...
+        <a href='/tutorialok/zend_doctrine_1_2_integracio.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>04</span>
+        2009 November
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/hosszu_szunet_utan.html'>Hosszú szünet után...</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Hosszú szünet után jelentkezek ismét bejegyzéssel. Sorolhatnám persze az okokat, hogy miért nem de most nem ezért ragadtam billentyűzetet, sokkal inkább nézzük a fejleményeket.</p>
+        <p>Legfontosabb, hogy mostantól főállású webprogramozóként dolgozom, ugyan Ruby helyett PHP-ban, de érdekesek a feladatok, emellett főként <a href="http://framework.zend.com/">Zend Framework</a>-öt használunk, amely egy remekül felépített MVC keretrendszer.</p>
+        <p>Emellett persze igyekszem nem elszakadni a Rubytól se, egy kis idő mindig akad egy-egy érdekesebbs témára. Az utóbbi időben főként tesztelési eljárásokkal ismerkedtem - <a href="http://pragprog.com/titles/achbd/the-rspec-book">RSpec és barátai</a> - amelyekről terveim szerint hamarosan egy bejegyzés is születik majd, a próbálkozásokból ezenfelül két hobbiprojekt is született.</p>
+        <p>Az <a href="http://github.com/csiszarattila/active_document">ActiveDocument</a> egy régóta tervezgetett ötlet volt: filekezelés kicsit másképp, az ActiveRecord mintájára. A koncepció onnan eredt, hogy annak idején adatbázis helyett sima text fájlokban szerettem volna tárolni a blogbejegyzéseimet - mivel így sokkal könnyebb a szerkesztésük/kezelésünk - majd. Ennek egy kivonataként, önálló libraryként született meg az elmúlt hónapokban apródonként ActiveRecord. Példákat és a pontos használatot megtaláljátok a <a href="http://github.com/csiszarattila/active_document">projekt Github oldalán</a>.</p>
+        <p>A másik Rubys projekt a Rubysztán blog alapjainak az újraírása volt: átültetni az ActiveRecord libraryra, részletesebb teszteléssel, letisztultabb működéssel, amellyel együtt egy általános célú blogmotor jött létre. Ennek a <a href="http://github.com/csiszarattila/mini">Mini</a> nevet adtam, Githubon szintén elérhető.</p>
+        <p>Hosszú kihagyás után mindez kevésnek tűnhet, de igérem mostantól igyekszem érdekes tartalommal feltölteni az oldalt.</p>
+      </div>
+      <div class='published'>
+        <span class='day'>07</span>
+        2009 Május
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/kapcsos_zarojel_szindroma.html'>Kapcsoszárójel-szindróma</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Bármennyire is a legkedvesebb nyelv a Ruby számomra, bizony rákényszerül az ember, hogy más programnyelveket is használjon a mindennapokban. Fél év után ismát PHP-t ragadtam.</p>
+        
+        <p>Nem mondom a PHP-ra való visszaállás nem volt zökkenőmentes, de nem okozott túl nagy nehézségeket sem. A PHP-vel alapvetően nincs nagy baj, de nagyon sok dolog furán hat és elgondolkoztatja az embert, ha hosszú időt eltölt a Rubyval - főképp az, hogy utóbbiban mennyire logikusabban vannak bizonyos dolgok megtervezve és implementálva.</p>
+        
+        <p>Hasonló a helyzet a keretrendszerekkel is: az elmúlt hónap során jópár MVC alapút kipróbáltam (CodeIgniter, CakePHP, Zend Framework) és óhatatlan volt a Railsszel való összehasonlításuk. Itt megintcsak ismételni tudom önmagam: mintegyik rendszer nagyon jól használható és okosan valósítja meg az MVC szemléletet, de olyan apró nüanszok hiányoznak belőlük, amelyek miatt számomra még mindig a Rails felé húz a szívem. A három PHP keretrendszer közül egyébként a Zend Framework nyerte el leginkább a tetszésemet, mivel elég rugalmasan konfigurálható és sok funkciót a Railshez hasonlóan old meg, így számomra jóval kevesebb meglepetést okozott.</p>
+        
+        <p>Ezzel együtt az utóbbi időben egyre gyakrabban merült fel bennem az a gondolat, hogy megérte-e egyáltalán a Rubyt és a Railst választani szakdolgozati témának, és nem mondjuk egy PHP alapú rendszer tervezéséről írni, de az utóbbi időszak tapasztalatai meggyőztek, hogy helyesen döntöttem. Mind a Ruby, mind a Rails nagyon sok hasznos fogást és (alap)ismeretet tanított meg mind programozásról, mind keretrendszerekről, nem is beszélve a mögötte rejlő alapvető gondolkodásmódról, amelyet bármelyik nyelvben hasznosíthatok.</p>
+        
+        <p>Hangsúlyozni szeretném, ezt a posztot nem offenzívaként akartam szánni a PHP ellen, és egy esetleges Ruby vs. PHP vitát elindítani. Épp ellenkezőleg a múltbeli tapasztalatok tanítottak meg arra, hogy minden technológia iránt fogékonynak kell lennie az embernek.</p>
+      </div>
+      <div class='published'>
+        <span class='day'>16</span>
+        2009 Április
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/nyelvtanulas_kedvtelesbol.html'>Nyelvtanulás pusztán kedvtelésből?</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Az utóbbi időben egyre gyakrabban kerül szóba a nyelvismeret (álláskeresés miatt többek között), ami jó apropó, hogy erről is írjak...régóta terveztem már ezt a témát. Pontosabban nem is a nyelvismeretről, hanem a nyelvtanulásról lesz szó.</p>
+        <p>Azt, hogy az iskolákban kritikán aluli a nyelvoktatás magamon tapasztaltam: 11 évnyi iskolapad koptatás után döntöttem úgy, hogy elegem van, én ezt magam is megtanulhatom.</p>
+        <p>Szerencsémre addigra már elég jó szókinccsel rendelkeztem: két évnyi intenzív fordítgatás után olyan szintre kerültem, hogy bármilyen angol szöveggel megbírkóztam, a tartalmát megértettem. És ekkor ért az első meglepetés: az első néhány nyelvkönyvet a kezembe véve elkezdtem megérteni a korábban érthetetlennek tűnő nyelvtani szerkezeteket, szabályokat és a magam ritmusában sikerült apránként magamba szívnom. Olyananyira, hogy jó félvére rá sikeres nyelvvizsgát tettem, elsőre átmentem!</p>
+        <p>Ezzel még magamat is sikerült meglepnem, hiszem jó két évvel korábban még meg voltam győződve róla - az iskolában ezt éreztették velem, hogy én soha nem fogok elégséges szintre eljutni angolból! Ekkor döbbentem rá a saját tapasztalataim útján, hogy nem a diákokkal, hanem legfőképp a tanítási módszerekkel van a gond.</p>
+        <p>Nálam így működött: elsőként találj egy neked érdekesnek tűnő témát(nekem a Forma 1 volt az) és kezdj el az adott nyelven olvasgatni, fordítani belőle. Meglátod nagyon gyorsan iszonyatos szókincsre teszel szert...a szótárból való tanulást felejsd el, azok a szavak nem fognak megmaradni. A nyelvtant jó félév, év után párhuzamosan kezd el tanulni, és inkább a magad, mint egy könyv ritmusában - például, ha nem értesz egy nyelvtani szerkezetet nézz utána! Próbálj meg minél több módon az adott nyelvvel kapcsolatba kerülni ...hírportálok, újságok olvasása, filmek, zenék, rádiók hallgatása... az internet és a web szinte mindent a kezünkbe ad, csak jól kell tudni kihasználni. És ha már sikeresen teljesítetted a nyelvvizsgád akkor se add fel a dolgot, folytasd a tanulást... én még három évvel a nyelvvizsga után is úgy érzem bőven van még hova fejlődnöm. Mindezt nem önfényezésből, hanem tanulságként szeretném megosztani, hogy mások is okuljanak a dologból: a nyelvtanulás nem misztikum, sőt lehet ezt élvezetesen is csinálni a lényeg a megfelelő módszer megtalálásában rejlik meg persze kell hozzá egy nagy adag kitartás is.</p>
+        <p>És azt, hogy ez a módszer helyes többek közt az is bizonyítja, hogy a családon belül is sikerült továbbadnom, és már látszanak az eredményei.</p>
+        <p>Másrészt érdekelne, hogy Ti hogyan tanultok nyelveket, hogyan tartjátok napi szinten a tudásotokat?</p>
+        <p>Én első körben angolosoknak nagyon tudom ajánlani a <a href="http://www.bbc.co.uk/worldservice/learningenglish/">BCC Learning English szekcióját</a>, rendkívül hasznos!</p>
+      </div>
+      <div class='published'>
+        <span class='day'>28</span>
+        2009 Március
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/blog_legkevesebb_sorban.html'>Blogmotor kevesebb, mint 150 kódsorban</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Amióta <a href="http://www.sinatrarb.com">Sinatrázom</a> foglalkoztatott egy projekt gondolata: vajon legkevesebb hány kódsorból lehetne egy alapfunkciójú blogmotort írni?</p>
+        <p>Az alapfunkciókon a következőket értem: bejegyzések hozzáadása/módosítása/törlése, kommentelés lehetősége, RSS a bejegyzésekről. A cél mindezt, a HTML kódokkal együtt, egy fájlban (!) megvalósítani, a lehető legkevesebb kódsorral!</p>
+        <p>Ma reggel bele is vágtam, és gyorsan sikerült is az elképzelt funkciókat megvalósítani. Első célként 100 kódsort jelöltem meg - és itt jól formázott kódot értek, nem egymásra tolt definíciókat. Hamar kiderült azonban, hogy ezt nem sikerül tartani a nézetek HTML kódjai miatt, a Haml használta ellenére. A következő határt, a 150 kódsort már bőven sikerült tartani, és végül 137 sorban sikerült is megállni.</p>
+        <p>
+          <a href='http://github.com/csiszarattila/wakeup/blob/98f1fd17dc088d4404216d7d037a464db689cb55/wakeup.rb'>Az elkészült művet, illetve próbálkozást itt nézhetitek meg.</a>
+        </p>
+        <p>A bejegyzést vehetitek felhívásnak is! Várom mások próbálkozásait is: írjatok hasonló funkciójú blogot bármiben, a lehető legkevesebb kóddal! Így legalább én is törhetem a fejem azon, hol lehetne még faragni a saját kódomból:)</p>
+      </div>
+      <div class='published'>
+        <span class='day'>26</span>
+        2009 Március
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/f1_kezdodik.html'>Kezdődik, kezdődik...F1 idénnyitó!</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Az ismerősök és családtagok között nem ismeretlen, hogy nagy Formula 1 rajongó vagyok... alig tudok kivárni minden versenyhétvégét. Ezért is voltam egyre türelmetlenebb mikor kezdődik már el az idei F1-es évad, nem is emlékszem kezdődött-e ennyire későn az utóbbi években. Megszokta az ember, hogy javában benne szoktunk járni márciusban amikor két versenyt is lefutottak többnyire. (Jó hír viszont, hogy a szezonnyitó Ausztrál Nagydíjat közvetlenül követi majd a Maláj GP).</p>
+        <p>Nekem egyébként nincs igazán nagy kedvencem - jó talán Räikkönen - de általában a neutrális oldalhoz tartozok - így például nem csinálok érzelmi kérdést, hogy ki a jobb az Alonso-Hamilton-Räikkönen hármasból-, és az igazán izgalmas futamokért drukkolok. Amire a radikális szabályoknak köszönhetően most nagyobb esély lehet és kicsit összezavarodhat a mezőny, szerintem az első versenyekig bőven lesznek meglepetések, utána nagy valószínűséggel visszaáll a McLaren-Ferrari uralom - ezt mutatták az első szabadedzések is - de ne legyen igazam!</p>
+        <p>A favoritjaim idén a vb címért: Räikkönen, Massa, Lewis, Alonso. Akire figyelni kell, mert zavart okozhat az űrben: Vettel:).</p>
+        <p>Annak akit érdekel én így követem az eseményeket év közben:</p>
+        <ul>
+          <li>
+            <p>Szabadedzések</p>
+            <p>Na igen, ez általában kemény dió szokott lenni. Ahhoz hogy élő-közvetítést fogjon az ember vadászni kell a kalóz stream közvetítésekre, tavaly a brit ITV internetes közvetítését sokan osztották meg, vagy angol proxy szerveren keresztül elérhető volt(IP alapján csak a britek nézhették). Idén a BBC-vel állítólag nehezebb lesz.</p>
+            <p>
+              <strong>Most olvasom, hogy a <a href="http://www.adtelly.tv/index.php">Firefoxhoz létezik egy ADtelly nevű kiegészítő amivel kijátszható az BBC Iplayer</a> (és tényleg működik!).</strong>
+            </p>
+          </li>
+          <li>
+            <a href='http://www.bbc.co.uk/radio/podcasts/cff1/'>Chequered Flag Formula 1 Podcast</a>
+            <br />
+            <p>A BBC 5-ös rádiójának műsora verseny előtti és utáni elemzésekkel, interjúkkal, a legjobb F1 újságírókkal, riporterekkel! F1 rajongóknak kötelező!</p>
+          </li>
+          <li>
+            <a href='http://news.bbc.co.uk/sport1/hi/motorsport/formula_one/default.stm'>BBC Sports Formula 1</a>
+            <br />
+            <p>Idéntől a BBC közvetíti újra Angliában a F1-t, a híroldaluk eddig sem volt gyenge, de köszönhetően a teljes közvetítésnek most már videókkal és még több információval egészítik ki az oldalukat.</p>
+          </li>
+          <li>
+            <a href='http://f1vilag.hu'>F1világ.hu</a>
+            <br />
+            <p>Annak aki magyarul szeretné élvezni a híreket. Egy kis reklám csinálok ennek az oldalnak - nézzétek el régi ismertség köt az oldal készítőjéhez (Ő is megszállott F1 rajongó, és elég sokat köszönhetek neki).</p>
+          </li>
+          <li>
+            <a href='http://autosport.com'>Autosport.com</a>
+            <br />
+            <p>A leghitelesebb F1-es híroldal, itt is a tűz közelében lévő újságírók publikálnak, sok érdekes tartalommal - a többségükért fizetni kell.</p>
+          </li>
+          <li>
+            Torrent oldalak...
+            <p>Nem szeretném itt reklámozni, honnan lehet teljes (akár belső kamerás!) futamokat is letölteni, de akit érdekel email-en keresztül szívesen megosztom.</p>
+          </li>
+          <li>
+            <a href='http://www.f1racing.co.hu/'>F1Racing újság</a>
+            <br />
+            <p>Nagy kár, hogy havonta jelenik meg... és szivesebben olvasnám angolul, bár a magyar fordítás is nagyon jó.</p>
+          </li>
+          <li>
+            <a href='https://launchpad.net/live-f1'>F1-live live timing (parancssorban)</a>
+            <br />
+            <p>Az F1-liveon elérhető live-timing rendszer...csak ehhez nem kell Java, ja és konzolon fut:)...linux-f1 mániásoknak kötelező. OSX alatt sem nehéz compileolni.</p>
+          </li>
+        </ul>
+        <p>Ezzel kívánok minden F1 rajongó társamnak jó szezont!;)</p>
+      </div>
+      <div class='published'>
+        <span class='day'>07</span>
+        2009 Március
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/posztok/metamorfozis.html'>Metamorfozis</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Kisebb (inkább nagyobb) átalakuláson esett át a Rubysztán blog. A korábbi hosszabb lélegzetvételű leírások mellett helyet szerettem volna szorítani a rövidebb, nemcsak a Rubyt és programozást érintő téáknak is - ezekre a régi struktúrában és formában nem volt igazán lehetőség. Egy különálló blog létrehozását nem tartottam ésszerűnek: a tartalmak frissítése, megosztása és követése túl bonyolult lett volna számomra és számotokra is. Úgyhogy ezentúl kibővített tartalommal jelentkezik a Rubysztán blog!</p>
+        <p>A tartalmi változtatás a nyitóoldal strukturáját is érintette: a rövidebb bejegyzéseket baloldalt, teljes hosszukban olvashatjátok, míg a korábbi és a jövőbeni hosszabb tartalmak, azaz cikkek listáját jobboldalt találjátok meg. Ezért kérem, akik (rss) hírolvasón keresztül követik a blogot is vessenek rá egy pillantást:). A hozzászólás lehetősége természetesen továbbra is megmaradt, sőt mindenkit arra buzdítok, hogy tegye meg!</p>
+        <p>Ami az oldal <strong>technikai részét</strong> illeti: a blog alatt egy saját, <a href="http://www.sinatrarb.com">Sinatrára</a> épülő rendszer fut. A bejegyzések és cikkek adatbázis helyett szöveges fájlokban tárolódnak: a hozzájuk kapcsolódó fontosabb meta-információk (pl. létrehozási dátum) YAML formátumban a szöveg elején, maga a tartalom egyszerű Haml formátumban található meg. Így kényelmesen, egy kódeditorral, webes felület nélkül szerkeszthetem a szöveget. A kommentek ezzel szemben egy törpe SQLite adatbázisban kapnak helyet - ezeket egy ActiveRecord modellen keresztül kezelem, így nem kell az SQL lekérdezések összeállításával bajlódni. Ezenfelül írtam hozzá pár automatizmust - bejegyzések létrehozása, feltöltése az éles szerverre - végrehajtó Rake parancsot is.</p>
+      </div>
+      <div class='published'>
+        <span class='day'>08</span>
+        2009 Február
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/couchdb_rubyban.html'>A CouchDB találkozása a Rubyval</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p><a href="/tutorialok/couchdb.html">A bejegyzés első részében láthattuk</a>, hogy a REST API-nak köszönhetően hogyan tudjuk a CouchDB-t elérni és használni. Mindez azt jelenti, hogy erre építve Rubyban is nagyon egyszerűen tudunk a...
+        <a href='/tutorialok/couchdb_rubyban.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>06</span>
+        2009 Február
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/couchdb.html'>CouchDB - szakítás a relációs adatbázisokkal</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p><a href="http://lackac.hu/2009/01/19/bibliaolvaso">Bácsi László(lackac) blogbejegyzésében</a> olvastam először a CoucDB-ről, és annyira megtetszett a koncepciója, hogy gondoltam Én is teszek egy mélyebb ismerkedést vele - mintegy k...
+        <a href='/tutorialok/couchdb.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>19</span>
+        2009 Január
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/html_prototipizalas.html'>Felhasználói-felületek HTML prototípusokkal</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>A következő bejegyzést két közelmúltban elolvasott bejegyzés ihlette. Először <a href=" http://www.rubyrailways.com/getting-real-with-balsamiq-amazing-mockups-in-a-breeze/">Szinek Péter blogjában mutatott be egy ötletes programot</a...
+        <a href='/tutorialok/html_prototipizalas.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>09</span>
+        2009 Január
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/rails_footnotes_plugin.html'>Rails debug tipp - rails-footnotes plugin</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Ha még nem hallottál volna a <a href="http://github.com/josevalim/rails-footnotes/wikis">rails-footnotes plugin</a>ról, mindenképp próbáld ki! Feltelepítése után minden oldalhoz hozzáad egy navigációs elemet, amelyről könnyedén e...
+        <a href='/tutorialok/rails_footnotes_plugin.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>04</span>
+        2009 Január
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/rails_session.html'>A Rails munkamenet kezelése</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Ebben a cikkben igyekszem összefoglalni a Rails munkamenet kezelési megoldásának alapjait: hogyan működik, miként használhatjuk azt. Ha nem ismernéd pontosan mi az a munkamenet-kezelés és miért van rá szükségünk webalkalmazások...
+        <a href='/tutorialok/rails_session.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>22</span>
+        2008 November
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/custom_form_builder.html'>Egyedi FormBuilder Railsben</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>A Rails sok automatizmust ad a kezünkbe, ezeket legtöbbször azonban felül kell bírálnunk. Viszont a Rubynak és a Rails logikus tervezésének köszönhetően könnyű dolgunk van.</p>
+        <p>Tegyük fel, hogy a következőre van szükségün...
+        <a href='/tutorialok/custom_form_builder.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>09</span>
+        2008 November
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/rails_textarea_haml.html'>Haml szövegbeviteli(textarea) mezőkben</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Nemsokkal az első Rails-es alkalmazáson megírása után elkezdtem használni a <a href="http://haml.hamptoncatlin.com/">Haml</a>-t, ami egy remek HTML templétező vagy sablon motor. Annak aki még nem ismerné, javaslom mindenképpen vessen...
+        <a href='/tutorialok/rails_textarea_haml.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>02</span>
+        2008 November
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/mysql_gem_telepites_osx_tiger.html'>MySQL Gem telepítése OSX 10.4.11(Tiger) alá</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Mi tegyünk ha a Rails(2.1) logjában ilyen üzenetekkel találkozunk:</p>
+        <pre>DEPRECATION WARNING: You're using the Ruby-based MySQL library that ships with Rails. This library will be REMOVED FROM RAILS 2.2. Please switch to the offical mysq...
+        <a href='/tutorialok/mysql_gem_telepites_osx_tiger.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>26</span>
+        2008 Október
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/ruby_frissitese_osx_alatt.html'>Ruby frissítése OSX 10.4(Tiger) alatt</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>A Mac OSX rendszerek - legjobb tudomásom szerint - a 10.3-as verzió óta előtelepítve tartalmazzák a Ruby interpretert. Az OSX 10.4 (Tiger) mindenképp, ugyanakkor ez csak(?) a Ruby 1.8.4-es verzióját jelenti. A következő leírás épp...
+        <a href='/tutorialok/ruby_frissitese_osx_alatt.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>19</span>
+        2008 Október
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/ruby_blokkok.html'>Ruby blokkok közelebbről</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>A mai célünk megtanulni, hogy a következő kifejezés:</p>
+        <pre>Array.new(3) { n += 1; n * 10 }&#x000A;=>[10, 20, 30]</pre>
+        <p>mit is jelent, hogyan is működik pontosan.</p>
+        <p>A Ruby fontos nyelvi elemeit jelentik a blokkok, amelyet szint...
+        <a href='/tutorialok/ruby_blokkok.html'>Tovább</a>
+      </div>
+      <div class='published'>
+        <span class='day'>12</span>
+        2008 Október
+      </div>
+      <div class='entry'>
+        <div class='summary'></div>
+        <h3>
+          <a href='/tutorialok/git_compile_osx.html'>Git fordítása OSX Tiger alatt (SVN modullal)</a>
+          <strong>&mdash;</strong>
+        </h3>
+        <p>Rendhagyó módon nem egy Rubys témájú bejegyzéssel nyitom meg az oldalt, de remélem elnézőek lesztek. Terveim szerint egyébként sem csak a kedvenc programozási nyelvünkről szólna ez a blog, időnként előfordulhat, hogy körülj�...
+        <a href='/tutorialok/git_compile_osx.html'>Tovább</a>
+      </div>
+    </div>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

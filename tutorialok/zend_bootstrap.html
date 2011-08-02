@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>Zend Framework: Zend_Application + Bootstrap + Resource</h1>
+    <p>A következő a cikksorozatokban - a Rubysztán blog történetében először - PHP-s témára kerül a sor, méghozzá a mostanság két legdivatosabb library, a Zend keretrendszer és a Doctrine összehangolására. Railsszel fejlesztők figyelem: jöhet egy kis Zend vs. Rails összehasonlítás:)</p>
+    
+    <p>Az alábbi példakódok az elmúlt időszakban tett erőfeszítéseim eredményei, amelyben általános, több célra felhasználható Zend keretrendszerre épülő alkalmazás-váz létrehozását tűztem ki célul.</p>
+    
+    <p>A példakódok követhetőek vagy teljes alkalmazás-váz letölthető <a href='http://github.com/csiszarattila/zendframework_base' title='A projekt Github oldala'>a projekt Github oldaláról</a>.</p>
+    
+    <p>A sorozat első részeként egy, a Zend keretrendszerre épülő MVC alkalmazásváz létrehozása, a bootstrappelés és a hozzá kapcsolódó fogalmak kerülnek bemutatásra. A folytatás a <a href='/tutorialok/zend_doctrine_1_2_integracio.html' title='Leírás a Zend_Framework-Doctrine integrációról'>Doctrine 1.2-es verziójának integráció</a>járól szól.</p>
+    
+    <h2 id='bootstrap_a_zend_applicationel'>Bootstrap a Zend Application-el</h2>
+    
+    <p>A Zend 1.8-as verziói előtt az alkalmazás indítása finoman szólva is eléggé hektikus területnek számított. Mivel a Zend keretrendszer moduláris felépítésűnek született, azzal az ötlettel, hogy a fejlesztőknek a legnagyobb szabadságot biztosítsa, a keretrendszer bootstrappelésére sem adott igazán egységes megoldást. Ez csak egy eredményhez: a tökéletes káoszhoz vezethetett. Félmegoldások és ötletek születtek, kinek ez, kinek az a megoldás működött - sajnos fejlesztőként a mindennapok során még nekem is ezekkel a katasztrófális megoldásokkal kell megbírkóznom.</p>
+    
+    <p>Az 1.8-as verzió megjelenése azonban magával hozta a Zend_Application osztályt, és vele együtt a korábbi gondok megoldását, hiszen ez lehetővé teszi, hogy egységes és objektumorientált módon, egy osztályon keresztül végezhessük az alkalmazás bootstrappelését és konfigurációját. A megoldás fokozatosan finomodott, és véleményem szerint az egyik leghasznosabb fejlődést hozta hosszú idő óta a Zend keretrendszerbe.</p>
+    
+    <p>Az alkalmazás indítása annyira legegyszerűsödött, hogy mindössze egy Zend_Application példányt kell létrehoznunk, amely két paramétert vár: a környezetét, és egy konfigurációs fájlt.</p>
+    
+    <p>A példányosítást megtehetjük az alkalmazás belépő pontján, ez az én esetemben a public/index.php fájl - minden kérést ide fut be:</p>
+    
+    <p><em>A public könyvtárba csak azoknak a fájloknak szabad kerülniük, amelyeket a webszervernek statikusan kell kiszolgánia, minden alkalmazásbeli logika ettől elválasztva, az application könyvtárba kerül.</em></p>
+    
+    <pre><code># public/index.php
+    $application = new Zend_Application(
+      APP_ENV,
+      APPLICATION_ROOT . &#39;/config/application.ini&#39;
+    );
+    
+    $application-&gt;bootstrap()-&gt;run();</code></pre>
+    
+    <p>A fenti kódsor használatához természetesen előbb szükségünk van:</p>
+    
+    <ol>
+    <li>
+    <p>A megfelelő osztályok eléréséhez, és néhány fontosabb útvonal definiálásához:</p>
+    
+    <p>Én ezeket egy külön fájlban (__config/include_paths.php__) helyeztem el, amit szükséges esetben beincludolva fel tudok használni.</p>
+    
+    <p><em>Itt adom hozzá az include</em>path-okhoz a Zend keretrendszer library/ könyvtárának elérését is, különben a public/index.php fájlban hiába hivatkoznék a Zend_Application osztályra._</p>
+    </li>
+    
+    <li>
+    <p>A környezet megállapítása:</p>
+    
+    <p>Ezt egyszerűen az APP_ENV környezeti változóból veszem, amely így bárhol beállíthatóvá válik:</p>
+    
+    <ul>
+    <li>
+    <p>Apache direktívával:</p>
+    
+    <p>SetEnv APP_ENV development</p>
+    </li>
+    
+    <li>
+    <p>Parancssorból:</p>
+    
+    <p>export APP_ENV=development</p>
+    </li>
+    
+    <li>
+    <p>Futás alatt PHP-ben:</p>
+    
+    <p>setenv(&#8216;APP_ENV&#8217;, &#8216;development&#8217;); getenv(&#8216;APP_ENV&#8217;);</p>
+    </li>
+    </ul>
+    </li>
+    </ol>
+    
+    <p>Így adott esetben könnyedén megváltoztathatom az alkalmazás futtatási környezetét ami lehetővé teszi, hogy eltérő beállításokat alkalmazzunk bizonyos helyezetekben: egy fejlesztői és egy éles rendszer szinte biztosan teljesen más beállításokat követel meg.</p>
+    
+    <p>Az alkalmazandó beállításokat az Zend_Application a példányosításakor átadott konfigurációs állományból olvassa ki. Környezetet ebben - a PHP ini formátumú sémáiban megszokott módon - a <em><span /></em> jelek között hozhatunk létre (pl. [production] ).</p>
+    
+    <p>Szerencsére a Zend keretrendszer konfigurációjó lehetővé tesz olyan alapvető dolgokat, mint a beállítások egymásból származtatása, felülbírálása. Én személy szerint azt a konvenciót követem, hogy minden alapbeállítást egy [default] címkével látok el, amelyet a további környezetek kiterjeszthetnek, így a szükséges beállítások egyszerűen felüldefiniálhatóak. Leszármaztatást a <em>:</em> jellel adhatjuk meg. Az alábbi példában az production(éles) környezet mindenben a default beállítasait használja, kivéve, hogy a regisztrációkról szóló értesítéseket egy másik címre irányítom át.</p>
+    
+    <pre><code>[default]
+    email.registration.email_to = csiszar.ati@gmail.com
+    
+    [production : default]
+    email.registration.email_to = administrator@example.com</code></pre>
+    
+    <p>A konfiguráció beolvasása után az alkalmazás felállítása a bootstrappeléssel folytatódik, amelyet a következő kódsor hív meg:</p>
+    
+    <pre><code>$application-&gt;bootstrap();</code></pre>
+    
+    <h2 id='bootstrap_bootstrap_osztly_s_a_bootstrap_resourceok'>Bootstrap, Bootstrap osztály és a Bootstrap Resource-ok</h2>
+    
+    <p>A Zend_Application a bootstrap során a konfigurációban megadott Bootstrap osztályhoz fordul, amely egyszerűen lefordítva futtat minden benne megadott <em>init prefixszel kezdődő metódust.</em></p>
+    
+    <p>Például az <em>initView metódus a nézetekhez tartozó alapvető feladatokat definiálhatja, és elvégzi bizonyos paraméterek beállítását:</em></p>
+    
+    <pre><code># application/Bootstrap.php
+    public function _initView()
+    {
+      $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper(&#39;viewRenderer&#39;);
+      $viewRenderer-&gt;initView();
+      $viewRenderer-&gt;view-&gt;doctype(&#39;XHTML1_TRANSITIONAL&#39;);
+    }</code></pre>
+    
+    <p>A bootstrappelést ugyanakkor egyszerűbbé tehetjük, ha a fentihez hasonló metódusokat külön osztályokban, a Zend terminilógiájában úgynevezett erőforrás plugineken keresztül valósítjuk meg. Az erőforrások használatával a bootstrappelés modulárisabbá tehető: a gyakran használt erőforrások könnyedén átvihetőek lesznek egyik alkalmazásból a másikba.</p>
+    
+    <p>Erőforrás létrehozásához a Zend_Application_Resource_ResourceAbstract absztrakt osztályt kell megvalósítanunk.</p>
+    
+    <p>A fenti példa valahogy így nézne ki erőforráskét megvalósítva:</p>
+    
+    <pre><code>class zf_Application_Resource_XhtmlView extends Zend_Application_Resource_ResourceAbstract
+    {
+    
+      public function init()
+      {
+        $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper(&#39;viewRenderer&#39;);
+        $viewRenderer-&gt;initView();
+        $viewRenderer-&gt;view-&gt;doctype(&#39;XHTML1_TRANSITIONAL&#39;);
+      }
+    }</code></pre>
+    
+    <p>Használatához az alkalmazás konfigurációjában PluginPath útvonalként kell regisztrálnunk az elérését:</p>
+    
+    <pre><code># application.ini
+    pluginPaths.custom_resources = LIBRARY_PATH &quot;/zf/Application/Resource&quot;</code></pre>
+    
+    <p>Az erőforrás osztály automatikus meghívását a bootstrap során egy hozzá kapcsolódó beállítás megadásával érhetjük el, amit könnyedén elérhetünk, hiszen a resources tömbön keresztül lehetőségünk van rá hivatkozni:</p>
+    
+    <pre><code>resources.xhtmlview.[]</code></pre>
+    
+    <p>Ebből következik,hogy mivel a bootstrap során az alap építőelemeit (a MVC mintához elengedhetetlen FrontController, View, Router stb. elemeket) a Zend keretrendszer maga is ilyen Resource-okon keresztül hívja meg, a konfigurációs állományból ezek rendkívül könnyen konfigurálhatóak lesznek. Az alábbi példában például egyszerűen meg tudom adni az MVC mintában elengedhetetlen controller osztályok elérését:</p>
+    
+    <pre><code>resources.frontController.controllerDirectory = APPLICATION_PATH &quot;/controllers&quot;</code></pre>
+    
+    <p>Ha mindezzel megvagyunk következhet az MVC M része, azaz a modellek kezelése, amelyre én a Doctrine ORM-t használtam fel.</p>
+    
+    <p>A Zend_Framework - Doctrine integrációjáról <a href='/tutorialok/zend_doctrine_1_2_integracio.html' title='Leírás a Zend_Framework-Doctrine integrációról'>a folytatásban olvashatsz</a>.</p>
+    
+    <h2 id='a_sorozatban_eddig_megjelent'>A sorozatban eddig megjelent</h2>
+    
+    <p><a href='/tutorialok/zend_bootstrap.html' title='Zend_Framework bootstrap'>Zend Framework: Zend_Application + Bootstrap + Resource</a></p>
+    
+    <p><a href='/tutorialok/zend_doctrine_1_2_integracio.html' title='Leírás a Zend_Framework-Doctrine integrációról'>Zend Framework: Doctrine 1.2 integrálása</a></p>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>Ruby frissítése OSX 10.4(Tiger) alatt</h1>
+    <p>A Mac OSX rendszerek - legjobb tudomásom szerint - a 10.3-as verzió óta előtelepítve tartalmazzák a Ruby interpretert. Az OSX 10.4 (Tiger) mindenképp, ugyanakkor ez csak(?) a Ruby 1.8.4-es verzióját jelenti. A következő leírás épp ezért a legfrisebb verziókra való frissítésben segít.</p>
+    <p>
+      <em>A Ruby interpreter Matz - a Ruby nyelv megalkotója - féle változata (MRI - Matz Ruby Interpreter) jelenleg két fő verziót tartalmaz: az 1.8.6-ost és az 1.8.7-est. A számozás itt kissé félrevezető lehet, mivel a két fő verzió két fő irányt jelent, például utóbbi jelentős változtatásokat tartalmaz és az alatta írt kódok nem feltétlenül kompatibilisek a 1.8.6-os verzióval. Épp ezért, ha nincsenek még korábbi Ruby verziók alatt írt programjaink én az 1.8.7-es verzió, ellenkező esetben az 1.8.6-os verziót ájánlom.</em>
+    </p>
+    <h2>Parancssori telepítés</h2>
+    <p>Töltsük le az 1.8.7 patchlevel 22-es verziót (A cikk írásának időpontjában ez számít a legfrissebb kiadásnak, amely több biztonsági hiba javítását is tartalmazza az alap 1.8.7-es verzióhoz képest)</p>
+    Majd csomagoljuk ki parancssorban:
+    <pre>tar -xf ruby-1.8.7-p22 &#x000A;cd ruby-1.8.7-p22</pre>
+    <pre>./configure --with-readline-lib=/usr/local/lib --enable-pthread</pre>
+    <p>A <em>--with-readline-lib</em> kapcsoló megadása fontos, ha szeretnénk ékezetes karaktereket használni az <strong>irb</strong> alatt.</p>
+    <pre>make&#x000A;(make test)&#x000A;sudo make install&#x000A;</pre>
+    Ellenőrzés:
+    <pre>ruby -v&#x000A;ruby 1.8.7 (2008-06-20 patchlevel 22) [i686-darwin8.11.1]</pre>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

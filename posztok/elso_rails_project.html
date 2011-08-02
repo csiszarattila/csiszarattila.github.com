@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>Első railsszes project...done</h1>
+    <p>Hát ezt is megértük&#8230; elindult az első <a href='http://www.euxpert.com/'>éles Railsszes alkalmazás (Euxpert)</a> amiben én is közreműködtem. Igaz a fejlesztés javarészt már készen volt és rám már csak az utolsó módósítások, finomítások vártak, de így is hatalmas tapasztalatot jelentett.</p>
+    
+    <p>Röviden néhány technikai fogás:</p>
+    
+    <ul>
+    <li>
+    <p><a href='http://wiki.opscode.com/display/chef/FAQ'>Chef</a> A szerver üzemeltetésére chefet használunk, Linode alapokon. Tulajdonképpen ez volt a legfőbb feladatom. Többnyire az opscode cookbookjai beváltak, egy-két saját egyedi recepttel vegyítve.</p>
+    </li>
+    
+    <li>
+    <p>Solr A szöveges keresés Solr szerveren keresztül történik. A <a href='https://github.com/outoftime/sunspot'>Sunspot</a> gemmel egyszerűen megoldható a Railsszes integráció. Csak egy tanács: élesben ne használjátok a sunspot beépített Solr szerverét!</p>
+    </li>
+    
+    <li>
+    <p><a href='https://github.com/plataformatec/devise'>Devise</a> Dont reinvent the weel: user/accountok kezeléséhez.</p>
+    </li>
+    
+    <li>
+    <p><a href='https://github.com/jamesgolick/resource_controller'>Resource controller</a> Mint az előbbi csak a kontrollerek &#8220;tisztán&#8221; tartására. Must have.</p>
+    </li>
+    
+    <li>
+    <p>Haml, Sass, Compass A Hamlról már írtam. A <a href='http://compass-style.org'>Sass+Compass</a> páros pedig verhetetlen. Próbáljátok ki!</p>
+    </li>
+    
+    <li>
+    <p><a href='http://hoptoadapp.com/pages/home'>Hoptoad</a> A futás közbeni hibák elkapására, értesítésre.</p>
+    </li>
+    
+    <li>
+    <p><a href='http://www.newrelic.com'>New relic rpm</a> Teljesítmény mérésre.</p>
+    </li>
+    
+    <li>
+    <p><a href='http://lighthouseapp.com'>Lighthouse</a> Bugok, feladatok nyomon követésére.</p>
+    </li>
+    </ul>
+    
+    <p>Persze a feladat döntő része viszont most jön, hiszen egy dolog elindítani valamit és utána tovább fejleszteni:) &#8230;Ohh by the way mostanában az <a href='http://www.pragprog.com/titles/achbd/the-rspec-book'>Rspec könyvet</a> olvasgatom.</p>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>

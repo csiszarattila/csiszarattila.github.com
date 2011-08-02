@@ -1,0 +1,129 @@
+/* line 1, content/stylesheets/style.sass */
+body {
+  font-family: Helvetica, Verdana, sans-serif;
+  color: #222222;
+}
+
+/* line 5, content/stylesheets/style.sass */
+#container,
+#title,
+#nav {
+  width: 800px;
+  margin: 0px auto;
+}
+
+/* line 11, content/stylesheets/style.sass */
+#nav {
+  font-size: 1.4em;
+  text-align: right;
+}
+/* line 14, content/stylesheets/style.sass */
+#nav a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+/* line 19, content/stylesheets/style.sass */
+#nav a:hover {
+  color: #551a8b;
+}
+
+/* line 23, content/stylesheets/style.sass */
+#rubysztan #nav {
+  text-align: center;
+}
+
+/* line 27, content/stylesheets/style.sass */
+#title {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 3em;
+}
+/* line 33, content/stylesheets/style.sass */
+#title a {
+  text-decoration: none;
+}
+
+/* line 36, content/stylesheets/style.sass */
+#intro,
+#contact {
+  border: 1px solid #bbbbbb;
+  border-left: none;
+  border-right: none;
+}
+/* line 42, content/stylesheets/style.sass */
+#intro p,
+#contact p {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: justify;
+}
+/* line 48, content/stylesheets/style.sass */
+#intro a,
+#contact a {
+  color: #551a8b;
+  text-decoration: none;
+}
+/* line 52, content/stylesheets/style.sass */
+#intro a:hover,
+#contact a:hover {
+  color: white;
+  background: #00cc00;
+}
+
+/* line 56, content/stylesheets/style.sass */
+#intro a {
+  font-size: 2em;
+}
+
+/* line 60, content/stylesheets/style.sass */
+#legal-notes {
+  margin-top: 1em;
+  color: #bbbbbb;
+  font-family: Georgia;
+  font-size: 0.8em;
+}
+
+/* line 70, content/stylesheets/style.sass */
+#rubysztan #title a,
+#rubysztan #nav a,
+#tutorial #title a,
+#tutorial #nav a {
+  color: #551a8b;
+  text-decoration: none;
+}
+/* line 74, content/stylesheets/style.sass */
+#rubysztan #title a:hover,
+#rubysztan #nav a:hover,
+#tutorial #title a:hover,
+#tutorial #nav a:hover {
+  color: black;
+  background: white;
+  text-decoration: underline;
+}
+
+/* line 79, content/stylesheets/style.sass */
+#rss {
+  text-align: center;
+}
+
+/* line 84, content/stylesheets/style.sass */
+#cv #container h1 {
+  font-family: Georgia, sans-serif;
+}
+/* line 87, content/stylesheets/style.sass */
+#cv #container img {
+  float: left;
+  margin-right: 20px;
+  height: 120px;
+  width: 150px;
+  border: 4px solid #e0e0e0;
+}
+/* line 94, content/stylesheets/style.sass */
+#cv #container a {
+  font-weight: bold;
+}
+/* line 97, content/stylesheets/style.sass */
+#cv #container a:hover {
+  background-color: #ffffbb;
+}

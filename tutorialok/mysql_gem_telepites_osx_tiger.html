@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head>
+  <title>csiszarattila.com</title>
+  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+  <meta content='Csiszár Attila' name='author'>
+  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+  <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
+  <link href='/stylesheets/tomayko.css' media='screen' rel='stylesheet' type='text/css'>
+</head>
+<body id='tutorial'>
+  <h1 id='title'>
+    <a href='/'>csiszarattila.com</a>
+    /
+    <a href='/rubysztan/'>Rubysztán</a>
+  </h1>
+  <div id='container'>
+    <h1>MySQL Gem telepítése OSX 10.4.11(Tiger) alá</h1>
+    <p>Mi tegyünk ha a Rails(2.1) logjában ilyen üzenetekkel találkozunk:</p>
+    <pre>DEPRECATION WARNING: You're using the Ruby-based MySQL library that ships with Rails. This library will be REMOVED FROM RAILS 2.2. Please switch to the offical mysql gem: `gem install mysql`  See http://www.rubyonrails.org/deprecation for details. (called from mysql_connection at /usr/local/lib/ruby/gems/1.8/gems/activerecord-2.1.1/lib/active_record/connection_adapters/mysql_adapter.rb:81)</pre>
+    <p>A MySQL adatbáziskezelő pedig már nem is használható a Rails 2.2-es verziójától a MySQL Gem megléte nélkül.</p>
+    <p>A Ruby ugyanis bár rendelkezik a maga kis mysql lib-implementációjával, csakhogy a MySQL-es fiúk sem pihentek és kiadták a saját verziójukat, ami jóval gyorsabb. A Rails tehát szeretné ezt használni.</p>
+    <h2>Telepítés Gemként</h2>
+    <pre>sudo gem install mysql</pre>
+    <p>De a gem csak nem fordul mivel explicit meg kell adnunk a mysql-dev fájlok - C header fájlok - helyét. Próbálkozzunk a mysql helyének a megadásával:</p>
+    <pre>sudo gem install mysql -- --with-mysql-dir=/usr/local/mysql</pre>
+    <p>Csak nem jó, bővebben:</p>
+    <pre>sudo gem install mysql -- --with-mysql-config=/usr/local/mysql/bin/mysql_config</pre>
+    <p>Majdnem, csak ekkor a fordítás elszáll ezzel:</p>
+    <pre>mysql.c: In function 'Init_mysql':&#x000A;mysql.c:2015: error: 'ulong' undeclared (first use in this function)&#x000A;</pre>
+    <p>De úgy tűnik nem vagyunk ezzel egyedül, mivel <a href="http://blog.maxdunn.com/articles/2006/12/12/installing-mysql-gem-on-mac-os-x-10-4">itt olvashatunk egy lehetséges megoldást</a>. A probléma <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/249986">részletesen.</a></p>
+    Próbáljuk meg magunk fordítani, azzal, hogy előbb lépjünk be a <strong>usr/local/lib/ruby/gems/1.8/gems/mysql-2.7/</strong> könyvtárba, majd adjuk hozzá a következő sort a <strong>mysql.c</strong> fájlhoz:
+    <pre>#define ulong unsigned long</pre>
+    <p>Majd fordítsuk manuálisan:</p>
+    <pre>sudo ruby ./exconf.rb --with-mysql-config=/usr/local/mysql/bin/mysql_config&#x000A;sudo make&#x000A;</pre>
+    <p>
+      <em>Tesztelés: Nos, mint azt az elsőként linkelt bejegyzés írója is írja, nem fut le a ./test.rb. Rossz felhasználóval akar csatlakozni. A fájlokat vizsgálva kiderül, hogy nem veszi át a paramétereket. Manuálisan beillesztve a paraméteket(host,user,pass) működik, csak pár teszt hasal el; long, meg bináris konverziókon, gondolom ez architektúrális probléma, ettől még mennie kell...</em>
+    </p>
+    <p>Telepítés:</p>
+    <pre>sudo make install</pre>
+    <p>Ha a Rails és a Ruby tovább panaszkodna, hogy nem találja a gem-et próbáljuk meg a következőt:</p>
+    <pre>/usr/bin/install -c -m 0755 mysql.bundle /usr/local/lib/ruby/site_ruby/1.8/i686-darwin8.11.1</pre>
+    <p>Ellenőrzés:</p>
+    <pre>irb&#x000A;irb(main):001:0>require 'mysql' => true</pre>
+    <div id='legal-notes'>
+      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-1524576-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+</body>
