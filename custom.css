@@ -1,0 +1,59 @@
+h1 {
+	font-size: 31.5px;
+	left-margin: 0px;
+}
+
+#silo,
+#rocket h2 {
+	padding-top: 20px;
+}
+
+h2 {
+	margin-top: 30px;
+	padding-bottom: 20px;
+}
+
+#rocket h2 a {
+	color: #333;
+	text-decoration:none;
+}
+
+#rocket li,
+#control-room li {
+	margin-right: 5px;
+	margin-bottom: 15px;
+}
+
+#rocket li a,
+#control-room li a {
+	text-decoration: none;
+}
+
+#control-room ul{
+	margin-top: 80px;
+	margin-left: 60px;
+}
+
+#coderwall {
+	margin-left: 60px;
+	width: 200px;
+}
+
+#legal-notes {
+	margin-top: 40px;
+}
+
+#legal-notes a {
+	text-decoration:none;
+	color: #000;
+}
+
+.thumbnail {
+	border: 0px;
+}
+
+.thumbnails p {
+	padding-top: 15px;
+	font-size: 14px;
+	text-align: center;
+}

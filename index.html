@@ -1,71 +1,193 @@
 <!DOCTYPE html>
-<head>
-  <title>csiszarattila.com</title>
-  <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
-  <meta content='Csiszár Attila' name='author'>
-  <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
-  <meta content='ruby, szeged ruby, szolnok ruby, zend php, webprogramozás, webfejlesztés, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
-  <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
-  <link href='/stylesheets/style.css' media='screen' rel='stylesheet' type='text/css'>
-</head>
-<body>
-  <h1 id='title'>
-    <a href='/'>csiszarattila.com</a>
-  </h1>
-  <div id='nav'>
-    <a href='/rubysztan/'>Rubysztán(blog)</a>
-    /
-    <a href='/cv/'>CV</a>
-    /
-    <a href='/kapcsolat/'>Kapcsolat</a>
-    /
-    <a href='http://github.com/csiszarattila'>Github</a>
-  </div>
-  <div id='container'>
-    <div id='intro'>
-      <p>Szia, Csiszár Attila webfejlesztő vagyok!</p>
-      <p>
-        Jelenleg
-        <a href='http://nexum.hu/'>Szegeden,</a>
-        LAMP+Zend környezetben,
-        <a href='cv/#fbb_projektek'>nagyforgalmú projekteken</a>
-        csiszolom a tudásom.
-      </p>
-      <p>
-        A munkám egyben a hobbim is, de szabadidőmben inkább Rubyval és Railsszel foglalkozom:
-        <a href='/irasok'>írok</a>
-        és
-        <a href='/olvasasok'>olvasok róluk.</a>
-      </p>
-      <p>
-        Annak idején diplomamunkaként írtam egy
-        <a href='http://szakdolgozat.csiszarattila.com'>webáruházat Railsben,</a>
-        amiből sikeres e-book lett.
-      </p>
-      <p>
-        Lelkes open-source hívő vagyok: a másoktól nem szégyelt kódjaimat a
-        <a href='http://github.com/csiszarattila/'>Githubon osztom meg,</a>
-        ezenkívül írtam pár
-        <a href='tutorialok'>tutorialt</a>
-        unix rendszerek használatáról, érdekes projektekről.
-      </p>
-      <p>
-        Kérdésed van vagy úgy gondolod segíthetek? Akkor lépj kapcsolatba velem a
-        <a href='/kapcsolat/'>csiszar.ati@gmail.com</a>
-        e-mail címen.
-      </p>
+<html>
+  <head>
+    <title>csiszarattila.com</title>
+    <meta content='text/html;charset=utf8' http-equiv='Content-Type'>
+    <meta content='Csiszár Attila' name='author'>
+    <meta content='Ruby, Ruby on Rails, Csiszár, Csiszár Attila' name='keywords'>
+    <meta content='webprogramozás, webfejlesztés, Ruby, Csiszár, Csiszár Attila' lang='hu' name='keywords'>
+    <meta content='Csiszár Attila (webprogramozó) személyes oldala. Webprogramozási leírások, tapasztalatok főként Ruby nyelven.' name='description'>
+    <link href='/bootstrap/css/bootstrap.css' media='screen' rel='stylesheet' type='text/css'>
+    <link href='/custom.css' media='screen' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class='container' id='launchpad'>
+      <div class='row'>
+        <div class='span12' id='controller-specialist'>
+          <h1>Szia, Csiszár Attila webfejlesztő vagyok!</h1>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='span8' id='silo'>
+          <p class='lead'>
+            Jelenleg
+            <a href='http://nexum.hu/'>Szegeden,</a>
+            LAMP+Zend környezetben,
+            <a href='#portfolio'>nagyforgalmú projekteken</a>
+            csiszolom a tudásom.
+          </p>
+          <p class='lead'>
+            A munkám egyben a hobbim is, de szabadidőmben inkább Rubyval és Railsszel foglalkozom.
+            Annak idején diplomamunkaként írtam egy
+            <a href='http://szakdolgozat.csiszarattila.com'>webáruházat Railsben,</a>
+            amiből sikeres e-book lett.
+          </p>
+          <p class='lead'>
+            Lelkes open-source hívő vagyok: a másoktól nem szégyelt kódjaimat a
+            <a href='http://github.com/csiszarattila/'>Githubon osztom meg,</a>
+            ezenkívül írtam pár tutorialt unix rendszerek használatáról, érdekes projektekről.
+          </p>
+          <p class='lead'>
+            Kérdésed van, vagy úgy gondolod segíthetek? Akkor lépj kapcsolatba velem a
+            jobb oldali kapcsolatok valamelyikén.
+          </p>
+          <div id='rocket'>
+            <h2>Toolbelt</h2>
+            <ul class='unstyled'>
+              <li class='btn'>
+                <a href='http://mislav.uniqpath.com/poignant-guide/book/chapter-3.html'>Ruby</a>
+              </li>
+              <li class='btn'>
+                <a href='http://david.heinemeierhansson.com/posts/29-the-rails-myths'>Ruby on Rails</a>
+              </li>
+              <li class='btn'>
+                <a href='http://www.codinghorror.com/blog/2012/06/the-php-singularity.html'>PHP</a>
+              </li>
+              <li class='btn'>
+                <a href='http://florinpatan.ro/2012/08/06/i-hate-people-that-love-zend-framework/'>Zend Framework</a>
+              </li>
+              <li class='btn'>
+                <a href='http://www.doctrine-project.org/blog/php-benchmarking-mythbusters.html'>Doctrine</a>
+              </li>
+              <li class='btn'>Composer</li>
+              <li class='btn'>
+                <a href='http://ashfurrow.com/blog/2012/03/why-objective-c-is-hard'>Objective-C</a>
+              </li>
+              <li class='btn'>
+                <a href='http://appleinsider.com/articles/09/04/23/apple_reaches_1_billion_app_mark_at_rate_of_5_5_million_per_day.html'>iOS</a>
+              </li>
+              <li class='btn'>OSX</li>
+              <li class='btn'>HAML</li>
+              <li class='btn'>SASS</li>
+              <li class='btn'>PostgreSQL</li>
+              <li class='btn'>MySQL</li>
+              <li class='btn'>MongoDB</li>
+              <li class='btn'>Unittest</li>
+              <li class='btn'>RSpec</li>
+              <li class='btn'>
+                <a href='http://www.opscode.com/chef/'>Chef</a>
+              </li>
+              <li class='btn'>Git</li>
+              <li class='btn'>SVN</li>
+              <li class='btn'>Facebook API</li>
+            </ul>
+            <h2>
+              <a name='portfolio'>Portfolio</a>
+            </h2>
+            <ul class='thumbnails'>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='http://profession.hu'>
+                    <img alt='Profession.hu' src='images/profession.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>Profession</p>
+              </li>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='http://www.heinekenhungaria.hu/'>
+                    <img alt='Heineken Hungaria' src='images/heineken.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>Heineken Hungária</p>
+              </li>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='http://www.tesco-karrier.hu/'>
+                    <img alt='Tesco Online Toborzás' src='images/tesco.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>Tesco Online Toborzás</p>
+              </li>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='#'>
+                    <img alt='EUxpert' src='images/euxpert.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>EUxpert social site</p>
+              </li>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='https://www.tavho.dalkia.hu/'>
+                    <img alt='Dalkia Online Ügyfélszolgálat' src='images/dalkia.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>Dalkia Online Ügyfélszolgálat</p>
+              </li>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='https://ugyfelszolgalat.gdfsuez-energia.hu'>
+                    <img alt='GDF-SUEZ Online Ügyfélszolgálat' src='images/gdf.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>GDF-SUEZ Online Ügyfélszolgálat</p>
+              </li>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='https://www.szegedivizmu.hu/public/hu/'>
+                    <img alt='Szegedi Vízmű Online Ügyfélszolgálat' src='images/szegedivizmu.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>Szegedi Vízmű Online Ügyfélszolgálat</p>
+              </li>
+              <li class='span2'>
+                <div class='thumbnail'>
+                  <a href='https://itunes.apple.com/hu/app/gdf-suez-zrt.-ugyfelszolgalat/id571594351?mt=8'>
+                    <img alt='GDF-SUEZ Ügyfélszolgálat iOS APP' src='images/gdf_ios.jpg'>
+                  </a>
+                </div>
+                <p class='lead'>GDF-SUEZ Ügyfélszolgálat iOS APP</p>
+              </li>
+            </ul>
+          </div>
+          <div class='lead' id='legal-notes'>
+            <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2013 Csiszár Attila</a>
+          </div>
+        </div>
+        <div class='span4' id='control-room'>
+          <ul class='unstyled'>
+            <li>
+              <iframe src="http://ghbtns.com/github-btn.html?user=csiszarattila&type=follow&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="220" height="30"></iframe>
+            </li>
+            <li>
+              <a href="https://twitter.com/csiszarattila" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @csiszarattila</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            </li>
+            <li class='btn'>
+              <strong>E-mail: csiszar.ati@gmail.com</strong>
+            </li>
+            <li class='btn'>
+              <strong>
+                <a href='https://coderwall.com/csiszarattila'></a>
+                Coderwall Archievements
+              </strong>
+            </li>
+          </ul>
+          <div id='coderwall'></div>
+        </div>
+      </div>
     </div>
-    <div id='legal-notes'>
-      <a href='http://creativecommons.org/licenses/by-nc-sa/2.5/'>&copy;2008-2010 Csiszár Attila</a>
-    </div>
-  </div>
-  <script type="text/javascript">
-  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-  </script>
-  <script type="text/javascript">
-  try {
-  var pageTracker = _gat._getTracker("UA-1524576-2");
-  pageTracker._trackPageview();
-  } catch(err) {}</script>
-</body>
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-1524576-2");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+    
+    <script src="/coderwall.js"></script>
+  </body>
+</html>
